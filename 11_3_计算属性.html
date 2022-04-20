@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>计算属性</title>
+</head>
+<!-- 计算属性是当多个数据需要结合使用或运算后使用 -->
+<!-- 每个计算属性都包含一个getter和一个setter
+    1，在上面的盒子中，我们只是使用getter来读取
+    2，在某些情况下，你也可以提供一个setter方法（不常用 ）
+    3，在需要写setter的时候，代码如下
+    我们可以将上面的代码换成计算属性：
+        
+-->
+
+<body>
+    <div id="app">
+        <!-- 1,直接用data显示姓名 -->
+        <h2>{{firstName + " "+lastName}}</h2>
+        <h2>{{firstName}} {{lastName}}</h2>
+        <!-- 2,用计算属性显示姓名 -->
+        <h2>{{fullName}}</h2>
+        <!-- 3，用方法返回值显示姓名 -->
+        <h2>{{getFullName()}}</h2>
+        <h3>总价格：{{totalPrice}}</h3>
+        <h3>总价格：{{name}}</h3>
+    </div>
+    <script src="./vue.js"></script>
+    <script>
+        const vm = new Vue({
+            el: "#app",
+            data: {/* 数据 */
+                firstName: "爱德",
+                lastName: "李",
+                books: [
+                    { id: 110, name: "Unix编程艺术", price: 119 },
+                    { id: 111, name: "代码大全", price: 105 },
+                    { id: 112, name: "深入理解计算机原理", price: 98 },
+                    { id: 113, name: "现代操作系统", price: 87 },
+                ]
+            },
+            computed: {/* 计算属性 */
+                /* 计算属性有缓存机制，计算结果会保存，重复使用不会再次计算，会直接使用缓存中的值 */
+                fullName: function () {
+                    return this.firstName + " " + this.lastName;
+                },
+                totalPrice: function () {
+                    let result = 0;
+                    for (let i = 0; i < this.books.length; i++) {
+                        result += this.books[i].price;
+                    }
+                    return result;
+                },
+                name: {/* 计算属性完整写法会有setter和getter方法，但我们不希望随便改值，所以没有写setter方法，所以是只读属性，而且还有一种简化写法 */
+                    set: function (newValue) {
+                        // console.log("name已被赋值为"+newValue);
+                        const names = newValue.split(" ");
+                        this.firstName = names[0];
+                        this.lastName = names[1];
+                    },
+                    get: function () {
+                        return "爱德-李";
+                    }
+                },
+                name1: function () {/* 计算属性的简化写法,直接写return语句 */
+                    return this.firstName + " " + this.lastName;
+                }
+
+            },
+            methods: {/* 方法 */
+                getFullName: function () {
+                    return this.firstName + " " + this.lastName;
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

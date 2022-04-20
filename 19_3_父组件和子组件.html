@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 判断使用GCF，即用Google Chrome浏览器内核渲染页面 -->
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>父组件和子组件</title>
+    <!-- 引入vue库,网上固定版本和本地文件 -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script> -->
+    <script src="./vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <!-- 组件1的使用 -->
+        <!-- <cpnt1></cpnt1>
+        <cpnt1></cpnt1> -->
+        <!-- 组件2的使用 -->
+        <cpnt2></cpnt2>
+        <cpnt2></cpnt2>
+    </div>
+</body>
+
+<script>
+    //1，创建第一个组件
+    const componentConstructor1 = Vue.extend({
+        template: `
+        <div>
+            <h2>我是标题1</h2>
+            <p>我是内容，哈哈哈哈哈哈</p>
+            <p>我是内容，呵呵呵呵呵呵呵呵呵呵呵呵</p>
+        </div>
+        `,
+    });
+    //2，创建第二个组件
+    const componentConstructor2 = Vue.extend({
+        template: `
+        <div>
+            <h2>我是标题2</h2>
+            <p>我是内容，哈哈，芜湖</p>
+            <p>我是内容，呵呵，起飞</p>
+            <cpnt1></cpnt1>
+        </div>
+        `,
+        components:{//此处在另一个组件内注册了组件构造器componentConstructor1,而此组件在Vue实例中注册
+            cpnt1:componentConstructor1,/* cpnt1在这个组件构造器中注册了，现在就可以在componentConstructor2中使用了，
+            它可以直接用于组件构造器componentConstructor2的模板中,但在componentConstructor2范围之外没有注册也不能使用，要想使用范围更广可以再在Vue实例中注册或全局注册 */
+        },
+    });
+    //root根组件
+    const vm = new Vue({//vue实例
+        el: '#app',
+        data: {//数据
+
+        },
+        methods: {//方法
+
+        },
+        computed: {//计算属性
+
+        },
+        watch: {//监听
+
+        },
+        filters: {//过滤器
+
+        },
+        components: {//组件
+            cpnt2:componentConstructor2,
+        },
+    });
+</script>
+
+</html>

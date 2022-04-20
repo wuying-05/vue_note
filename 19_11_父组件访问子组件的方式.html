@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 判断使用GCF，即用Google Chrome浏览器内核渲染页面 -->
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>父组件访问子组件的方式</title>
+    <!-- 引入vue库,网上固定版本和本地文件 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+    <script src="./vue.js"></script>
+    <!-- 有时候我们需要父组件直接访问子组件，子组件直接访问父组件，或者是子组件访问根组件，
+        1，父组件访问子组件：使用$children或者$refs（reference:引用;）
+        2,子组件访问父组件：使用$parent
+    我们先来看下$children的访问
+        1，this.$children是一个数组类型，它包含所有子组件对象。
+        2，我们这里通过一个遍历，取出所有子组件的message状态
+    -->
+</head>
+
+<body>
+    <div id="app">
+        <cpn></cpn>
+        <cpn></cpn>
+        <cpn ref="ccc"></cpn>
+        <button @click="show">按钮</button>
+    </div>
+</body>
+<template id="cpn">
+    <div>
+        <h2>子组件</h2>
+    </div>
+</template>
+<script>
+    const vm = new Vue({//vue实例
+        el: '#app',
+        data: {//数据
+
+        },
+        methods: {//方法
+            show() {
+                /* 1，$children =>子组件对象数组*/
+                console.log(this.$children);//this.$children表示当前父组件下所有子组件对象数组，子组件数量过多时不方便使用$children
+                this.$children[0].show_message();
+                /* 2,$refs =>包含所有含有ref属性的子组件的一个对象，默认值为{}，内部键值对格式：ref值:对应的子组件对象, */
+                console.log(this.$refs);//this.$refs表示当前父组件下所有有ref属性值的子组件的一个对象，常用的访问方式ref和id有些类似
+                console.log(this.$refs.ccc.children_name);
+            }
+        },
+        computed: {//计算属性
+
+        },
+        watch: {//监听
+
+        },
+        filters: {//过滤器
+
+        },
+        components: {//组件
+            "cpn": {
+                template: "#cpn",
+                data() {
+                    return {
+                        children_name: "我是王大头",
+                    }
+                },
+                methods: {
+                    show_message() {
+                        console.log("子组件：show_message()方法");
+                    }
+                }
+            }
+        },
+    });
+</script>
+
+</html>

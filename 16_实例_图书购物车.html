@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图书购物车</title>
+    <!-- 引入网页样式 -->
+    
+    <link rel="stylesheet" href="./16_style.css">
+</head>
+
+<body>
+    <div id="app">
+        <div v-if="books.length">
+            <table>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>书籍名称</th>
+                        <th>出版日期</th>
+                        <th>价格</th>
+                        <th>购买数量</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(item,index) in books">
+                        <td>{{item.id}}</td>
+                        <td>{{item.name}}</td>
+                        <td>{{item.date}}</td>
+                        <td>{{item.price | showPrice}}</td><!-- 过滤器的使用: 参数 | 过滤器方法名 -->
+                        <td>
+                            <button @click="decrement(index)" v-bind:disabled="item.count <= 1">-</button>
+                            <!-- 标签的disabled属性出现则标签不可用，v-bind可以用来控制属性的存在，当属性值为true时属性存在，反之，属性值为false时属性不存在 -->
+                            {{item.count}}
+                            <button @click="increment(index)">+</button>
+                        </td>
+                        <td><button @click="removeHandle(index)">移除</button></td>
+                    </tr>
+                </tbody>
+            </table>
+            <h2>总价格：{{totalPrice|showPrice}}</h2>
+        </div>
+        <h2 v-else>购物车为空</h2>
+    </div>
+    <!-- 引入vue库，网页行为 -->
+    <script src="./vue.js"></script>
+    <script src="./16_JavaScript.js"></script>
+</body>
+
+</html>

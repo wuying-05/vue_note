@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 判断使用GCF，即用Google Chrome浏览器内核渲染页面 -->
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>注册组件的语法糖</title>
+    <!-- 引入vue库,网上固定版本和本地文件 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+    <script src="./vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <cpn1></cpn1>
+        <cpn2></cpn2>
+    </div>
+</body>
+<script>
+    // a,创建组件构造器
+    const cpn1 =Vue.extend({
+        template:`
+        <div>
+        <h2>我是标题</h2>
+        <p>我是内容，哈哈</p>
+        </div>
+        `,
+    });
+    // b,注册组件
+    Vue.component("cpn1",cpn1);
+    // 1,全局组件注册的语法糖写法如下，直接把模板对象作为参数传入
+    Vue.component("cpn1",{
+        template:`
+        <div>
+        <h2>我是标题1</h2>
+        <p>我是内容1，哈哈</p>
+        </div>
+        `,
+    });
+    
+</script>
+<script>
+    const vm = new Vue({//vue实例
+        el: '#app',
+        data: {//数据
+            
+        },
+        methods: {//方法
+            
+        },
+        computed: {//计算属性
+            
+        },
+        watch: {//监听
+            
+        },
+        filters: {//过滤器
+            
+        },
+        components: {//组件
+            // 2，注册局部组件的语法糖
+            "cpn2":{
+                template:`
+                <div>
+                    <h2>我是标题2</h2>
+                    <p>我是内容2，哈哈</p>
+                </div>
+        `,
+            }
+        },
+    });
+</script>
+
+</html>

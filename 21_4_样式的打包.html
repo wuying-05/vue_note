@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 判断使用GCF，即用Google Chrome浏览器内核渲染页面 -->
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>样式的打包</title>
+    <!-- 引入vue库,网上固定版本和本地文件 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+    <script src="./vue.js"></script>
+</head>
+<!-- 类似于前面JS文件的打包，其它文件也能打包，比如.css文件，把.css文件也当模块进行打包即可 
+1,首先得安装webpack扩展功能loader插件,终端上选中位置后输入"npm install --save-dev css-loader"
+  还要安装样式使用时的插件"style-loader",输入"npm install style-loader --save-dev"安装
+2,在main.js内添加"require(./css/style1.css)"建立模块间依赖关系
+3，"webpack.config.js"文件添加.css文件如何处理的规则,如下：`
+    module: {//模块
+        rules: [{//规则
+            test: /\.css$/,//针对.css文件
+            // css-loader只负责将css文件进行加载，而style-loader将样式添加到DOM中
+            use: ["style-loader",'css-loader']//从右向左使用css-loader和style-loader
+        }]
+    }`
+4,使用打包指令"npm run build"
+-->
+
+<body>
+    <div id="app">
+
+    </div>
+</body>
+
+
+</html>

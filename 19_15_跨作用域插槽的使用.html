@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 判断使用GCF，即用Google Chrome浏览器内核渲染页面 -->
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>跨作用域插槽的使用</title>
+    <!-- 引入vue库,网上固定版本和本地文件 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+    <script src="./vue.js"></script>
+    <!-- 移动端设置 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<!-- 编译作用域概念：
+官方给出一条准则：父组件模板的所有东西都会父组件作用域内编译;子组件模板的所有东西会在子级使用域内编译。
+    作用域插槽：
+    用一句话概括：父组件替换插槽用的标签，可以由子组件提供;
+-->
+
+<body>
+    <div id="app">
+        <cpn v-show="isShow"></cpn>
+        <!-- 此处使用的isShow来自vm实例中的data,也就是说处于vm的作用域内，而非在组件cpn的作用域内 -->
+        <cpn>
+            <template slot-scope="slot">
+                <!-- slot-scope="slot"，slot-scope指令取得子组件中所有数据（scope:深入检查;），
+                    "slot"仅用于给这些数据取名，返回的是一个对象{自定义名称:{子组件数据}}即{slot:{data1:["JavaScript", "C++", "Java", "C#", "Python", "Go", "Swift"]}} -->
+                <span v-for="item in slot.data1">{{item}} - </span>
+                <br />
+                <span>{{slot.data1.join(" - ")}}</span>
+            </template>
+        </cpn>
+        <!--  -->
+        <cpn></cpn>
+    </div>
+</body>
+<template id="cpn">
+    <div>
+        <h2>我是标题</h2>
+        <button v-show="isShow">按钮</button>
+        <!-- 此处使用的isShow来自组件cpn的data函数，也就是说处于cpn的作用域内，并没有进入vm实例的作用域内-->
+        <slot :data1="pLanguages">
+            <ul>
+                <li v-for="item in pLanguages">{{item}}</li>
+            </ul>
+        </slot>
+    </div>
+</template>
+<script>
+    const vm = new Vue({//vue实例
+        el: '#app',
+        data: {//数据
+            isShow: true,
+        },
+        methods: {//方法
+
+        },
+        computed: {//计算属性
+
+        },
+        watch: {//监听
+
+        },
+        filters: {//过滤器
+
+        },
+        components: {//组件
+            cpn: {
+                template: "#cpn",
+                data() {
+                    return {
+                        isShow: false,
+                        pLanguages: ["JavaScript", "C++", "Java", "C#", "Python", "Go", "Swift"],
+                    }
+                },
+            }
+        },
+    });
+</script>
+
+</html>

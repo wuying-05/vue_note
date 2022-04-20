@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 判断使用GCF，即用Google Chrome浏览器内核渲染页面 -->
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>组件的独立的数据存放位置</title>
+    <!-- 引入vue库,网上固定版本和本地文件 -->
+<!--     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script> -->
+    <script src="./vue.js"></script>
+    <!-- 组件是一个单独功能模块的封装：
+            1，这个模块有属于自己的HTML模板，也应该有属性的数据data
+        组件中的数据是保存在哪里呢？顶层的Vue实例中吗？
+            1，我们先来测试一下，组件中能不能直接文章中Vue实例中的data
+            2,我们发现不能访问，而且即使可以访问如果将所有的数据都放在Vue实例中，Vue就会变的非常的臃肿
+            所以Vue组件应该有自己保存数据的地方
+        组件自己的数据存放在哪里呢？
+        1，组件对象也有一个data属性（也可以辰methods等属性，正面我们有用到）
+        2，只是这个data属性必须是一个函数
+        3，而且这个函数返回一个对象，对象内部保存着数据
+    -->
+
+
+</head>
+
+<body>
+    <div id="app">
+        <cpn1></cpn1>
+        <cpn1></cpn1>
+        <cpn1></cpn1>
+    </div>
+</body>
+<template id="cpn1">
+<div>
+    <h2>{{title}}</h2>
+    <h2>计数器计数为：{{counter}}</h2>
+    <button @click="num_down">-</button>
+    <button @click="num_up">+</button>
+</div>
+</template>
+<script>
+    Vue.component("cpn1",{
+        template:"#cpn1",
+        data(){
+            return{
+                title:"我是模板数据中的标题",
+                counter:0,
+            };
+            /* 组件的data为什么必须是一个函数？
+            1，因为return每次会产生一个可独立使用的内存空间，
+            可避免复用组件时却用的是同一个数据空间，组件本应是独立的，所以不能去共用一个数据空间
+            */
+        },
+        methods:{
+            num_down(){
+                this.counter--;
+            },
+            num_up(){
+                this.counter++;
+            }
+        }
+
+    })
+</script>
+<script>
+    const vm = new Vue({//vue实例
+        el: '#app',
+        data: {//数据
+            
+        },
+        methods: {//方法
+            
+        },
+        computed: {//计算属性
+            
+        },
+        watch: {//监听
+            
+        },
+        filters: {//过滤器
+            
+        },
+        components: {//组件
+            
+        },
+    });
+</script>
+
+</html>

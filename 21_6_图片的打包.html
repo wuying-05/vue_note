@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 判断使用GCF，即用Google Chrome浏览器内核渲染页面 -->
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>图片的打包</title>
+    <!-- 引入vue库,网上固定版本和本地文件 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+    <script src="./vue.js"></script>
+</head>
+<!-- webpack官网："https://webpack.docschina.org/concepts/" -->
+<!-- 图片的打包也类似于.css文件的打包
+1，安装"url-loader"及相关配置见官网："https://webpack.docschina.org/loaders/url-loader/#root"
+    ...:test:/\.(png|jpg|gif|jpeg)$/
+2，安装file-loader指令"npm install file-loader --save-dev"图片过大时需要用到file-loader
+-->
+<body>
+    <div id="app">
+        <h2>芭比粉</h2>
+        <ul>
+            <li><div>#6a122d<div></div></div></li>
+            <li><div>#842852<div></div></div></li>
+        </ul>
+
+    </div>
+    </div>
+</body>
+
+<style>
+    li:nth-of-type(1)>div>div{
+        width: 300px;
+        height: 150px;
+        background-color: #6a122d;
+    }
+    li:nth-of-type(2)>div>div{
+        width: 300px;
+        height: 150px;
+        background-color: #842852;
+    }
+</style>
+
+</html>

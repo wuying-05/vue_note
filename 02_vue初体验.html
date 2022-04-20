@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vue初体验</title>
+</head>
+<body>
+    <div id="app">
+        <h2>{{message}}</h2>
+        <h2>{{name}}</h2>
+    </div>
+    <script src="./vue.js"></script>
+    <script>
+    /* Hello Vuejs
+        1,let(变量)/const(常量)
+        2,编程范式:声明式编程
+    */
+    const app=new Vue({/* const声明常量 new操作符用于生成实例 Vue()为vue.js库中的一个构造方法 */
+        el:"#app",//用于挂载管理的元素
+        data:{//定义数据
+            message:"你好啊,Vue",/* 声明数据，多个数据用","隔开 */
+            name:"沉木"
+        }
+    });         
+    /* 元素js的做法(编程范式:命令式编程)
+        1,创建div元素,设置id属性
+        2,定义一个变量message
+        3,将message变量放在前面的div元素中显示
+        4,修改message的数据为:今天天气真不错!
+        5,将修改后的数据再次替换到div元素
+    */
+    </script>
+    <!-- 至此以上代码做了什么？
+    1，创建了一个Vue对象
+    2，创建时传入了一个匿名的配置对象即传入了一些options:{}
+        (1)配置对象时要到el属性，该属性决定了就这个Vue对象挂载到哪个元素上，很明显，我们这里是挂载到了id为app的元素上   
+        (2){}中包含了data属性，该属性中通常会存储一些数据
+            a,这些数据可以是我们直接定义出来的，比如像上面这样
+            b,也可能是来自网络，从服务器加载的
+    3，而且，更重要的是，它还是响应式的
+        (1)也就是说，当我们数组中的数据发生改变时，界面会自动改变
+        (2)我们打开开发者模式的console,来试一下
+    -->
+</body>
+</html>

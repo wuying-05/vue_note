@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>v-model_select下拉列表</title>
+</head>
+
+<body>
+    <div id="app">
+        <!--下拉列表 1，只能选择一个值 -->
+        <h2>select单选时：</h2>
+        <select name="a" id="s1" v-model="fruit">
+            <option value="苹果">苹果</option>
+            <option value="香蕉">香蕉</option>
+            <option value="榴莲">榴莲</option>
+            <option value="葡萄">葡萄</option>
+        </select>
+        <h2>您最喜欢的水果是：{{fruit}}</h2>
+        <!--下拉列表 2，可以选择多个值 -->
+        <h2>select多选时：(按contrl键选择进行多选)</h2>
+        <select name="b" id="s2" v-model="mySelects" multiple> 
+            <option value="苹果">苹果</option>
+            <option value="香蕉">香蕉</option>
+            <option value="榴莲">榴莲</option>
+            <option value="葡萄">葡萄</option>
+        </select>
+        <h2>您要买走的水果是：{{mySelects}}</h2>
+
+    </div>
+</body>
+<script src="./vue.js"></script>
+<script>
+    const vm = new Vue({
+        el: "#app",
+        data: {
+            message: "你好啊",
+            fruit: "香蕉",
+            mySelects:["葡萄"],
+        }
+    });
+</script>
+
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 判断使用GCF，即用Google Chrome浏览器内核渲染页面 -->
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>el和template的关系</title>
+    <!-- 引入vue库,网上固定版本和本地文件 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+    <script src="./vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+
+    </div>
+</body>
+<script>
+    const App = {//把app也弄成一个组件
+        template: `
+        <div>
+            <h2>我是标题</h2>
+            <p>我是内容</p>
+        </div>`,
+        data() {//数据
+            return {
+
+            }
+        },
+        methods: {//方法
+
+        },
+        computed: {//计算属性
+
+        },
+        watch: {//监听
+
+        },
+        filters: {//过滤器
+
+        }
+
+    }
+    const vm = new Vue({//vue实例
+        el: '#app',
+        template: `<App/>`,//模板，此模式会完美替换el对应的标签，在此处放模板然后替换body中一个标签即可，这也是常用的模块化开发写法
+        components: {//组件
+            App
+        },
+    });
+</script>
+
+</html>

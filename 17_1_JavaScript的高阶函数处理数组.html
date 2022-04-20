@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript的高阶函数处理数组</title>
+</head>
+<!--编程范式：命令式编程/声明式编程
+编程范式：面向对象编程（第一公民：对象）/函数式编程（第一公民：函数）
+三个高阶函数filter/map/reduce,什么是高阶函数即函数的参数可以是函数的函数 -->
+<script>
+    /* 过滤函数filter,filter中的回调函数有一个要求：必须返回一个boolean值，
+此boolean为true时，即每次回调函数的返回值为true时，函数内部会自动将这次回调的n加入到新的数组中
+反之，当返回值为false时，函数内部会过滤掉这次的n
+*/
+    /* 函数式编程演示*/
+    /* 1,需求：取出所有小于100的数字 */
+    const nums = [10, 20, 111, 222, 444, 40, 50];
+    /* a,普通方法 */
+    let newNums = [];
+    for (let n of nums) {
+        if (n < 100) {
+            newNums.push(n);
+        }
+    }
+    /* b,filter过滤函数 */
+    let newNums1 = nums.filter(function (n) {//形式参数n依次取出数组中的元素
+        return n < 100;//此处返回值为true时，对应的n会放入到filter返回值中的新数组中，为false时则会被滤除，n编历完后filter函数会返回一个值全都满足条件的数组
+    })
+    /* 2，需求：将所有小于100的数字进行转化：全部*2 */
+    /* c.普通方法 */
+    let new2Nums = [];
+    for (let n of newNums) {
+        new2Nums.push(n * 2)
+    }
+    console.log(new2Nums);
+    /* d,map映射 遍历数组，并且返回一个新的数组，新的数组里的每个元素都执行map传入的函数 */
+    let new2Nums1 = newNums1.map(function (n) {
+        return n * 2;
+    });
+    //3,需求：将所有new2Nums数字相加，得到最终的记过
+    /* e,普通方法 */
+    let total = 0;
+    for (let n of new2Nums) {
+        total += n;
+    }
+    /* f,reduce对数组中所有内容进行汇总 */
+    let total_ = new2Nums1.reduce(function (preValue, n) {
+        return -10;
+    }, 0)
+    /* 第一次遍历：preValue = 0,n=20 */
+    /* 第二次遍历：preValue = -10,n=40 */
+    /* 第三次遍历：preValue = -10,n=80 */
+    /* 第四次遍历：preValue = -10,n=100 */
+    let total1 = new2Nums.reduce(function (preValue, n) {
+        return preValue + n;
+    }, 0);
+    /* 过程分析
+    1，preValue初始化值等于reduce方法的第二个参数的值即0，数组依次遍历，n为index=0时数组的索引值即20，reduce方法的第一个参数为一个函数，函数的返回值将作为第二次循环的preValue
+    2，preValue等于上次循环第一个参数的返回值,数组中index=1的索引值赋值给n,匿名函数的返回值将作为第三次循环preValue的值
+    3，preValue等于上次循环第一个参数的返回值,数组中index=2的索引值赋值给n,匿名函数的返回值将作为第四次循环preValue的值
+    4，preValue等于上次循环第一个参数的返回值,数组中index=3的索引值赋值给n,匿名函数的返回值赋值给preValue,匿名函数要完成与数组的长度相同次数的循环，到此四次循环已经完成，reduce函数的返回值为preValue
+    
+    */
+    console.log("写法一：total1 = " + total1);
+    /* 求三个操作后最终值，写法二 */
+    let total2 = nums.filter(function (n) {
+        return n < 100;
+    }).map(function (n) {
+        return n * 2;
+    }).reduce(function (preValue, n) {
+        return preValue + n;
+    }, 0);
+    console.log("写法二：total2 = " + total2);
+    /* 求三个操作后最终值，写法三 */
+    let total3 = nums.filter(n => n < 100).map(n => n * 2).reduce((preValue, n) => preValue + n, 0);
+    console.log("写法三：total3 = " + total3);
+</script>
+
+<body>
+
+</body>
+
+</html>

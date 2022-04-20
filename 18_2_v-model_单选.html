@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>v-model处理单选radio</title>
+</head>
+
+<body>
+    <div id="app">
+        <h2>单选框radio</h2>
+        <label for="male">
+            <input type="radio" id="male" value="男" v-model="sex">男
+            <!-- 当name属性相同时两个组件会互斥，不能同时出现，但v-model相同时也有此效果，所有用v-model时一般用不上name属性 -->
+        </label>
+        <label for="female">
+            <input type="radio" id="female" value="女" v-model="sex">女
+        </label>
+        <h2>你选择的性别是: {{sex}}</h2>
+    </div>
+</body>
+<script src="./vue.js"></script>
+<script>
+    const app = new Vue({
+        el: "#app",
+        data: {
+            message: "你好啊",
+            sex: "男",/* 此处可以给一个初始值作为默认值 */
+        }
+    });
+</script>
+
+</html>

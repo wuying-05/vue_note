@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>模板语法</title>
+    <script src="./vue.js"></script>
+    <!-- 模板语法(新建一个vue实例的模板)
+        1，插值操作
+        2，绑定属性
+        3，计算属性
+        4，事件监听
+        5，条件判断
+        6，循环遍历
+        7，阶段案例
+        8，v-model              
+    -->
+</head>
+
+<body>
+    <div id="app">
+        <!-- 对于模板语法中的插值操作有以下6种基础指令 -->
+        <!--1,{{}}
+            mustache 模板，用于构造html页面内容,且要放在标签内容中。
+            在实际工作中，当同一个模板中想要调用不同的函数来渲染画面，
+            在已经自定义好了的前提下，可以在渲染页面时对传入的参数进行手动判断。
+            【在不好判断的情况下，我们可以通过改变传入参数来进行判断】 -->
+        <!-- {{}}就是 Mustache 的标示符，花括号里的 data 表示键名，这句的作用是直接输出与键名匹配的键值 -->
+        <h2>{{message}}</h2>
+        <h2>{{message}},王大壮！</h2>
+        <!-- mustache语法中，不光是可以直接写变量，也可以写简单的表达式 -->
+        <h2>{{firstName + lastName}}</h2>
+        <h2>{{firstName + " " + lastName}}</h2>
+        <h2>{{firstName}} {{lastName}}</h2>
+        <h2>{{number*2}}</h2>
+        <!-- 2,v-once 
+            在些情况下，我们可能不希望界面随意的跟随改变
+            这时，我们就可以使用一个Vue指令v-once
+            v-once :
+            该指令表示元素和组件（组件后面才会学习）只渲染一次，不会随着数据的改变而改变
+            代码如下：
+        -->
+        <h2 v-once>{{number*2}}</h2>
+        <!-- 3,v-html
+            此指令用于解析数据中的html代码并渲染
+        -->
+        <h2>{{url}}</h2>
+        <h2 v-html="url">1</h2>
+        <!-- 4,v-text
+            v-text作用和Mustache比较相似：都是用于将数据显示界面中，但v-text是直接替换标签中的内容，而mustache语法可以加其它内容
+            v-text通常情况下，接收一个String类型的变量
+        -->
+        <h2>姓名：{{name}}</h2>
+        <h2 v-text="name"></h2>
+        <!-- 5,v-pre
+            仅标签内的内容原封不动的显示，不解析
+        -->
+        <h2 v-pre>{{name}}</h2>
+        <!-- 6,v-cloak
+            1，在没完成vue解析之前，div中有一个属性v-cloak
+            2,在完成vue解析之后，div中没有一个属性v-cloak，此属性被删除
+            根据v-cloak的特性，可以用属性选择器控制元素解析前的样式
+        -->
+        <style>
+            [v-cloak] {
+                display: none;
+            }
+        </style>
+        <h2 v-cloak>{{name}}</h2>
+    </div>
+</body>
+
+<script>
+    const app = new Vue({
+        el: "#app",
+        data: {
+            message: "你好啊",
+            firstName: "爱德",
+            lastName: "李",
+            number: 260,
+            url: '<a href="https://www.bilibili.com/video/BV15741177Eh?p=13">教程</a>',
+        },
+        computed: {
+            name() {
+                return this.firstName + " " + this.lastName
+            }
+        }
+    });
+</script>
+
+</html>
+<!-- 代码规范
+    1，缩进2个空格比较好
+    2，等号两边有一个空格
+    ...
+    写一部分代码后，格式化一下，VSCode中格式化快捷键为：Alt+SHIFT+F
+    自定义vue片段(vue模板)，绝对路径：C:\Users\ASUS\AppData\Roaming\Code\User\snippets\vue.json.code-snippets
+-->

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue中的MVVM模式</title>
+    <!-- 一，什么是MVVM呢？
+        1，通常我们学习一个概念，最好的方式是去看维基百科（对，千万别看成了百度百科）
+        2,https://zh.wikipedia.org/wiki/Wikipedia:首页
+        3，维基百科的官方解释，我们不再赘述
+        详情请见图05_Vue中MVVM模式.jpg
+    -->
+    <script src="./vue.js"></script>
+</head>
+
+<body>
+    <img src="./05_Vue中MVVM模式.jpg" alt="MVVM模式">
+
+    <div id="app">
+        {{message}}
+    </div>
+    <script>
+        const app = new Vue({
+            el: "#app",
+            data: {
+                message: "hi Vue!"
+            }
+        });
+    </script>
+</body>
+<!-- 二，创建Vue实例传入的options
+    到目前为止需掌握这些选项
+    el:决定之后Vue实例会管理哪一个DOM
+    类型：string | HTMLElement
+    data:Vue实例对应的数据对象
+    类型：Object | Function(组件当中data必须是一个函数)
+    methods:定义属于Vue中的一些方法，可以在其他地方调用，也可以在指令中使用
+
+-->
+<!-- 三，Vue的生命周期
+    生命周期：事物从诞生到消亡的整个过程
+    vue()构造函数中做了一系列的准备和处理，对传入的参数应用并通过回调函数告知进行到哪个步骤
+-->
+<script>
+    function say(value) {
+        alert(value);
+    }
+    alert(say);
+    say('hi js.');
+    function test(f, value) {
+        f(value);
+    }
+    test(say, "hi 回调函数");
+</script>
+
+</html>

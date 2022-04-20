@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 判断使用GCF，即用Google Chrome浏览器内核渲染页面 -->
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>不能用驼峰标识</title>
+    <!-- 引入vue库,网上固定版本和本地文件 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+    <script src="./vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <cpn :cinfo="info"></cpn><!-- 此处不支持变量驼峰写法即:cinfo不能写成:cInfo的形式，不然传入的数据无法接收，即父子组件无法完成通信,但可以用变量下划线写法 -->
+    </div>
+</body>
+<template id="cpn">
+    <div>
+        <!-- 模板的最外层需要一个根元素包住模板不然会报错，此处模板根元素为div -->
+        <h2>{{cinfo}}</h2>
+        <p>我是内容</p>
+    </div>
+</template>
+<script>
+    const vm = new Vue({//vue实例
+        el: '#app',
+        data: {//数据
+            info: {
+                name: "我是标题",
+                age: 20,
+                height: 1.77,
+            }
+        },
+        methods: {//方法
+
+        },
+        computed: {//计算属性
+
+        },
+        watch: {//监听
+
+        },
+        filters: {//过滤器
+
+        },
+        components: {//组件
+            "cpn": {//自定义组件名 ：配置对象
+                template: "#cpn",//模板：模板对象
+                data() {//组件数据函数
+                    return {//返回组件数据对象
+                        
+                    }
+                },
+                props: {//组件接收属性
+                    cinfo: {//接收cinfo属性
+                        type: Object,//cinfo属性类型
+                        default() {//未接收时执行语句
+                            return {//未接收时返回
+                                name: "名字未传入"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+    });
+</script>
+
+</html>

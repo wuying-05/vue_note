@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>const的使用</title>
+</head>
+
+<body>
+    <!-- const关键字
+            1,在很多语言中已经存在，比如C/C++中，主要的作用是将某个变量修饰为常量
+            2，在JavaScript中也是如此，使用const修饰的标识符为常量，不可以再次赋值
+        什么时候使用const呢？
+            1，当我们修饰的标识符不会被再次赋值时，就可以使用const来保证数据安全
+        注意：1,const标识符声明变量必须立即赋值
+              2,且赋值之后不可再次更改，
+              3,对于const声明的复合型数据类型的数据保存的仅是地址，所以可以改变对象内部的属性，但不可赋一个新的对象
+        建议：在ES开发中，优先使用const，只有需要改变某一个标识符的值的时候才使用let/var
+    -->
+    <script src="./vue.js"></script>
+    <script>
+        const vm=new Vue({
+            el:"#app",
+            data:{
+                number:0,
+            }
+        });
+        const date={
+            date:"2020/11/11",
+        };
+        /* 当const声明对象时，只要声明的对象内存指向不变就行，对象内部属性可以变化 */
+        date.date="2020/11/12";
+    </script>
+</body>
+
+</html>

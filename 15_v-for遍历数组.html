@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>v-for遍历数组</title>
+    <!-- 当我们有一级数据而要进行渲染时，我们就可以使用v-for来完成
+        1，v-for的语法类似于JavaScript中的for循环(Java中四种遍历方式中的for in依次遍历)
+        2，格式如下：item in items的形式
+        我们来看一个简单的案例：
+        如果在遍历过程中不需要使用索引值
+            1，v-for="movie in movies"
+            2,依次从movies中取出movie,并且在元素的内容踢，我们可以使用Mustache语法，来使用movie
+    -->
+</head>
+
+<body>
+    <div id="app">
+        <!-- 1，在遍历数组的过程中，没有使用索引值（下标值） -->
+        <ul>
+            <li v-for="item in names">{{item}}</li>
+        </ul>
+        <!-- 2,在遍历数组的过程中，获取索引值并使用 -->
+        <ul>
+            <li v-for="(item1,index) in names">{{index+1}}, {{item1}}</li>
+        </ul>
+        <!-- 1，遍历对象的过程中，如果只是获取一个值，那么获取到的是value ,格式：value in -->
+        <ul>
+            <li v-for="item in info">{{item}}</li>
+        </ul>
+        <!-- 2，遍历对象的过程中，用两个变量可以获取键值对，获取到的是value和key,格式：(value,key) in -->
+        <ul>
+            <li v-for="(item,key) in info">{{key}} :{{item}}</li>
+        </ul>
+        <!-- 3，遍历对象的过程中，用三个变量可以获取键值对及下标，获取到的是value,key和index,格式：(value,key,index) in-->
+        <ul>
+            <li v-for="(item,key,index) in info">{{index+1}}, {{key}} :{{item}}</li>
+        </ul>
+        <!-- 组件的key属性
+                    官方推荐我们在使用v-for，给对应的元素或组件添加上一个:key属性，每次把元素和取出的内容进行了绑定，这样被遍历的数组或对象内部数据发生变化（主要是添加）
+                    时，因为先前已经用key进行了绑定，发生变化时，性能能提升
+            -->
+        <ul>
+            <li v-for="item in names" :key="item">{{item}}</li>
+        </ul>
+        <!-- （掌握）数组中那些方法是响应式的-->
+        <ul>
+            <li v-for="item in names">{{item}}</li>
+        </ul>
+        <!-- <button @click="btnClick">按钮</button> -->
+        <button @click="vm.sum(1,2,3,6,8,10)">可变参数add方法</button>
+        <script src="./vue.js"></script>
+        <script>
+            const vm = new Vue({
+                el: "#app",
+                data: {
+                    names: ["why", "kobe", "james", "curry"],
+                    info: {
+                        name: "wu",
+                        age: 20,
+                        height: 1.88
+                    }
+                },
+                methods: {
+                    /* 那些方法是响应式的 */
+                    /* btnClick() {
+                        //1,push方法 末尾添加多个
+                        this.names.push("push方法是否能做到响应式：true");
+                        //2,通过索引修改数组中的元素
+                        this.names[0]="this.names[0]修改数组中的元素能否做到响应式：false";
+                        //3,pop() 末尾删除 pop方法是否能做到响应式：true
+                        this.names.pop();
+                        //4,shift() 首位删除 shift方法是否能做到响应式：true
+                        this.names.shift();
+                        //5,unshift() 首位添加多个
+                        this.names.unshift("unshift方法是否能做到响应式：true");
+                        //6,splice作用：删除元素/插入元素/替换元素 splice方法是否能做到响应式：true
+                        //splice(start,delNumber,...)start代表从第几个索引值开始操作,delNumber为要删除的索引值的数量，delNumber后面的所有参数为依次要添加的索引值
+                        //简单理解：splice的第一个参数为要开始操作的位置
+                                    第二个参数为要删除的索引值的数量，可以为0即不删除
+                                    第三个参数及其以后的参数为要添加的索引值，可以没有即不添加
+                        //7,sort() 数组有序排列 sort方法是否能做到响应式：true
+                        this.names.sort();
+
+                        //8,reverse() 数组反转 reverse方法是否能做到响应式：true
+                        //三种通过索引值修改数组中的元素
+                        this.names[0]="wu"; //...:false
+                        this.names.splice(0,1,"wu");  //...:true
+                        //Vue对象的set方法修改，set(要修改的对象,索引值,修改后的值)
+                        Vue.set(this.names,0,"wu");  //...true
+                    }, */
+                    /* 可变参数...n  n是用于存放参数的数组*/
+                    sum(...n){
+                        console.log(n);
+                        let s=0;
+                        for(let i=0;i<n.length;i++){
+                            s+=n[i];
+                        }
+                        console.log(s);
+                    }
+                }
+            });
+            vm.sum(1,2,3,4,5);
+        </script>
+    </div>
+</body>
+
+</html>

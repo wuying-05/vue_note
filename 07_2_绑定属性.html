@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>绑定属性</title>
+    <script src="./vue.js"></script>
+    <!-- v-bind介绍
+        前面我们学习的指令主要作用是将值插入到我们模板的内容当中
+        但是，除了内容需要动态来决定外，某些属性我们也希望动态来绑定
+            1，比如动态绑定a元素的href属性
+            2，比如动态绑定img元素的src属性
+        这个时候，我们可以使用v-bind指令
+        作用：动态绑定属性
+        缩写：:
+        预期：any(with argument)|Object(without argument)
+        参数：attrOrProp(optional)
+    -->
+</head>
+<style>
+    .red {
+        color: red;
+    }
+
+    .big {
+        font-size: 200%;
+    }
+
+    .background {
+        background-color: aqua;
+    }
+</style>
+
+<body>
+    <div id="app">
+        <img v-bind:src="imgURL">
+        <!-- class属性的值可以是对象,因为对象可以用来存键值对 -->
+        <h2 v-bind:class="{style1:true,style2:boolean}">{{message}}</h2>
+        <h2 v-bind:class="{red:isRed,big:isBig}" style="display:block">{{message}}</h2>
+        <!-- 实际在用的时候一般是把绑定的class放到getClass()方法中返回出来的值亦或者是计算属性中getClass()方法返回值 -->
+        <h2 v-bind:class="getClass()" style="display:block">{{message}}</h2>
+        <!-- class和v-bind:class可以同时存在，它们会合并，而不是覆盖，一些基本的，不会变动的样式会用class来指定，会变动的样式用v-bind:class -->
+        <h2 class="background" v-bind:class="{red:isRed,big:isBig}" style="display:inline-block">{{message}}</h2>
+        <!-- class属性的值也可以是数组，一个储存类名的数组 -->
+        <h2 class="background" v-bind:class="['red','big']" style="display:inline-block">{{message}}</h2>
+        <h2 class="background" v-bind:class="getClassArray()" style="display:inline-block">{{message}}</h2>
+        <button v-on:click="red">切换字体颜色</button>
+        <button v-on:click="size">切换字体大小</button>
+    </div>
+    <script>
+        const vm = new Vue({
+            el: "#app",
+            data: {
+                imgURL: "https://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png",
+                isRed: true,
+                isBig: true,
+                message: "我的天",
+                color:"red",
+                changeBig:"big",
+                number:-1,
+            },
+            methods: {
+                red: function () {
+                    this.isRed = !this.isRed;
+                },
+                size: function () {
+                    this.isBig = !this.isBig;
+                },
+                getClass: function () {
+                    return { red: this.isRed, big: this.isBig };
+                },
+                getClassArray: function () {
+                    return [this.color,this.changeBig]
+                }
+            }
+        });
+    </script>
+
+</body>
+
+</html>

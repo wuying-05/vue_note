@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 判断使用GCF，即用Google Chrome浏览器内核渲染页面 -->
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>模块化导出和导入</title>
+    <!-- 引入vue库,网上固定版本和本地文件 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+    <script src="./vue.js"></script>
+    <!-- 模块:具有独立的结构，样式，行为,模块化时会形成单独的空间，内部不受外界影响。 -->
+    <!-- 模块化有两个核心：导出和导入
+    第一种是CommonJS的导出和导入（不常用）
+    CommonJS的导出：
+        module.exports ={
+            flag=true,
+            test(a,b){
+                return a+b;
+            },
+            demo(a,b){
+                return a+b;
+            }
+        }
+        CommonJS的导入：
+        //CommonJS模块
+        let {test,demo,flag}=require("moduleA");
+        //等同于
+        let _mA = require("moduleA");
+        let test = _mA.test;
+        let demo = _mA.demo;
+        let flag = _mA.flag;
+    //还有一种是ES6的模块化实现（常用）：export(导出)/import(导入)
+    -->
+</head>
+
+<body>
+    <div id="app">
+
+    </div>
+</body>
+<!-- script标签中使用 type="module"使此标签及内容形成模块（module:模块,程序块,功能块,单元;） -->
+<script type="module">//这个script内容是由项目组长写的，主要是一些公共样式或基础样式和网页轮廓框架
+    /* 。。。 */
+</script>
+<script type="module" src="./20_2_m1.js">//这个由组员小明写的，一部分功能</script>
+<script type="module" src="./20_2_red1.js">//这个由组员小红写的，一部分功能</script>
+<script type="module" src="./20_2_m2.js">//不久后，小明又被安排写另一部分功能</script>
+
+</html>
+<!-- 后续学习内容会频繁使用文件夹，不适合再和基础内容放到一起,下接"../Vue2_Advanced/a1_webpack打包工具/21_1_webpack工具简介.html" -->

@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 判断使用GCF，即用Google Chrome浏览器内核渲染页面 -->
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue笔记大融合总结</title>
+    <!-- 引入vue库,网上固定版本和本地文件 -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script> -->
+    <script src="./vue.js"></script>
+</head>
+
+<style>
+    [v-cloak] {
+        display: none;
+    }
+
+    table {
+        border: 1px solid #e9e9e9;
+        border-collapse: collapse;
+        border-spacing: 0;
+    }
+
+    th,
+    td {
+        padding: 8px 16px;
+        border: 1px solid #e9e9e9;
+        text-align: left;
+    }
+
+    th {
+        background-color: #f7f7f7;
+        color: #5c6b77;
+        font-weight: 600;
+    }
+</style>
+
+<body>
+    <div id="app">
+        <button v-on:click="add">+</button> <!-- v-on:click和@click绑定方法 -->
+        <button @click="sub">-</button>
+
+        <h2>{{message}}</h2><!-- 双大括号表达式：直接展示数据 -->
+
+        <cpn><span slot="center">标题1</span></cpn>
+        <cpn><button slot="left">按钮</button><span slot="center">标题2</span></cpn>
+        <cpn><input type="text" slot="center"><button slot="left">返回</button><button slot="right">搜索</button></cpn>
+
+        <h2>{{firstName + " " + lastName}}</h2>
+
+        <h2 v-once>{{number*2}}</h2><!-- 该指令表示元素和组件（组件后面才会学习）只渲染一次，不会随着数据的改变而改变 -->
+
+        <h2 v-html="url">1</h2><!-- 此指令用于解析数据中的html代码并渲染 -->
+
+        <h2 v-text="name"></h2>
+        <!-- v-text作用和Mustache比较相似：都是用于将数据显示界面中，但v-text是直接替换标签中的内容，而mustache语法可以加其它内容
+            v-text通常情况下，接收一个String类型的变量 -->
+        <h2 v-pre>{{name}}</h2> <!-- 仅标签内的内容原封不动的显示，不解析 -->
+
+        <!-- 6,v-cloak
+            1，在没完成vue解析之前，div中有一个属性v-cloak
+            2,在完成vue解析之后，div中没有一个属性v-cloak，此属性被删除
+            根据v-cloak的特性，可以用属性选择器控制元素解析前的样式
+        -->
+
+
+        <!-- class属性的值可以是对象,因为对象可以用来存键值对 -->
+        <h2 v-bind:class="{red:isRed,big:isBig}" style="display:block">{{message}}</h2>
+        <h2 v-bind:class="getClass()" style="display:block">{{message}}</h2>
+        <!-- class和v-bind:class可以同时存在，它们会合并，而不是覆盖，一些基本的，不会变动的样式会用class来指定，会变动的样式用v-bind:class -->
+        <h2 class="background" v-bind:class="{red:isRed,big:isBig}" style="display:inline-block">{{message}}</h2>
+        <!-- class属性的值也可以是数组，一个储存类名的数组 -->
+        <h2 class="background" v-bind:class="['red','big']" style="display:inline-block">{{message}}</h2>
+        <h2 class="background" v-bind:class="getClassArray()" style="display:inline-block">{{message}}</h2>
+        <button v-on:click="red">切换字体颜色</button>
+        <button v-on:click="size">切换字体大小</button>
+
+        <ul>
+            <li v-for="(m,index) in arr" :class="{active:currentIndex === index}" @click="liClick(index)">
+                {{index}}--{{m}}</li>
+        </ul>
+
+        <!-- <h2 :style="{key(属性名):value(属性名)}">{{message}}</h2> -->
+        <h2 :style="{fontSize:finalSize+'px',backgroundColor:finalColor}">{{message}}</h2>
+        <h2 :style="getStyles()">{{meassage}}</h2>
+
+        <!-- v-bind语法中没加引号的会被视为变量，加了引号的才是字符串 -->
+        <h2 :style="[baseStyle,baseStyle1]"></h2>
+
+        <h3>书总价格：{{totalPrice}}</h3>
+
+        <button @click="change">change</button><!-- 方法后不加()传入该方法地址，部分代码加载完成后（即到下一个计时器运行前）自动调用 -->
+        <button @click="change()">change()</button><!-- 方法后加()立即运行此函数 -->
+        <button @click="change(123,event)">change(123,event)</button>
+        <!-- 在此处传入自己需要的参数和event变量，注意直接写event会被当作某个变量而非浏览器event对象，因此一般写$event传入 -->
+
+        <ul>
+            <li v-for="(item,key,index) in info">{{index+1}}, {{key}} :{{item}}</li>
+        </ul><!-- 3，遍历对象的过程中，用三个变量可以获取键值对及下标，获取到的是value,key和index,格式：(value,key,index) in-->
+        <!-- 组件的key属性
+                    官方推荐我们在使用v-for，给对应的元素或组件添加上一个:key属性，每次把元素和取出的内容进行了绑定，这样被遍历的数组或对象内部数据发生变化（主要是添加）
+                    时，因为先前已经用key进行了绑定，发生变化时，性能能提升
+            -->
+
+        <div v-if="books.length">
+            <table>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>书籍名称</th>
+                        <th>出版日期</th>
+                        <th>价格</th>
+                        <th>购买数量</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(item,index) in books">
+                        <td>{{item.id}}</td>
+                        <td>{{item.name}}</td>
+                        <td>{{item.date}}</td>
+                        <td>{{item.price | showPrice}}</td><!-- 过滤器的使用: 参数 | 过滤器方法名 -->
+                        <td>
+                            <button @click="decrement(index)" v-bind:disabled="item.count <= 1">-</button>
+                            <!-- 标签的disabled属性出现则标签不可用，v-bind可以用来控制属性的存在，当属性值为true时属性存在，反之，属性值为false时属性不存在 -->
+                            {{item.count}}
+                            <button @click="increment(index)">+</button>
+                        </td>
+                        <td><button @click="removeHandle(index)">移除</button></td>
+                    </tr>
+                </tbody>
+            </table>
+            <h2>总价格：{{totalPrice|showPrice}}</h2>
+        </div>
+        <h2 v-else>购物车为空</h2>
+
+        <!-- v-model相当于两条指令:1,v-bind绑定一个value属性 2，v-on指令给当前元素绑定input事件 -->
+        <input type="text" :value="message" @input="valueChange">
+        {{message}}
+        <input type="text" v-model="message"><!-- v-model双向绑定 -->
+        {{message}}
+        <div></div>
+
+        <h2>单选框radio</h2>
+        <label for="male">
+            <input type="radio" id="male" value="男" v-model="sex">男
+            <!-- 当name属性相同时两个组件会互斥，不能同时出现，但v-model相同时也有此效果，所有用v-model时一般用不上name属性 -->
+        </label>
+        <label for="female">
+            <input type="radio" id="female" value="女" v-model="sex">女
+        </label>
+        <h2>你选择的性别是: {{sex}}</h2>
+
+        <button :disabled="!isAgree">下一步</button><br />
+
+        <!-- 2，checkbox多选框 -->
+        <!-- 多个复选框：
+                1，当是多个复选框时，因为可以选中多个，所以对应的data中是一个数组。
+                2，当选中某一个时，就会将input的value添加加到数组中。
+        -->
+        <h3>checkbox选择多个</h3>
+        <label for="a1"><input type="checkbox" value="篮球" id="a1" v-model="hobbies">篮球</label>
+        <label for="a2"><input type="checkbox" value="足球" id="a2" v-model="hobbies">足球</label>
+        <label for="a3"><input type="checkbox" value="乒乓球" id="a3" v-model="hobbies">乒乓球</label>
+        <label for="a4"><input type="checkbox" value="羽毛球" id="a4" v-model="hobbies">羽毛球</label>
+        <h4>您的爱好是：{{hobbies}}</h4>
+
+        <!--下拉列表 1，只能选择一个值 -->
+        <h2>select单选时：</h2>
+        <select name="a" id="s1" v-model="fruit">
+            <option value="苹果">苹果</option>
+            <option value="香蕉">香蕉</option>
+            <option value="榴莲">榴莲</option>
+            <option value="葡萄">葡萄</option>
+        </select>
+        <h2>您最喜欢的水果是：{{fruit}}</h2>
+        <!--下拉列表 2，可以选择多个值 -->
+        <h2>select多选时：(按contrl键选择进行多选)</h2>
+        <select name="b" id="s2" v-model="mySelects" multiple>
+            <option value="苹果">苹果</option>
+            <option value="香蕉">香蕉</option>
+            <option value="榴莲">榴莲</option>
+            <option value="葡萄">葡萄</option>
+        </select>
+        <h2>您要买走的水果是：{{mySelects}}</h2>
+
+        <!-- 1，修饰符：lazy 懒加载,到失去焦点或按enter时才加载-->
+        <input type="text" v-model.lazy="message">
+        <h3>{{message}}</h3>
+        <!-- 2，修饰符：number 转数字型-->
+        <input type="text" v-model.number="age">
+        <h3>值：{{age}}，类型：{{typeof age}}</h3>
+        <!-- 3,修饰符：trim 去两头空格-->
+        <input type="text" v-model.trim="name">
+        <h3>去两头空格后：{{name}}</h3>
+
+        <!-- 绑定属性父=>子 -->
+        <cpn1 v-bind:see_movies="movies" :show="show_message"></cpn1>
+        <!-- 发射事件子=>父 -->
+        <cpn @item_click="cpn_click"></cpn>
+        <!-- 父组件此处可以接收子组件发射的事件，以此触发父组件内的事件来处理子组件发射的事件,
+            父组件的处理函数不写加参数则默认将子组件发射事件的第二个参数即item作为参数
+            -->
+        <cpn>
+            <!-- 跨作用域插槽 -->
+            <template slot-scope="slot">
+                <!-- slot-scope="slot"，slot-scope指令取得子组件中所有数据（scope:深入检查;），
+                        "slot"仅用于给这些数据取名，返回的是一个对象{自定义名称:{子组件数据}}即{slot:{data1:["JavaScript", "C++", "Java", "C#", "Python", "Go", "Swift"]}} -->
+                <span v-for="item in slot.data1">{{item}} - </span>
+                <br />
+                <span>{{slot.data1.join(" - ")}}</span>
+            </template>
+        </cpn>
+
+
+    </div>
+</body>
+<template id="cpn">
+    <div>
+        <h2>我是标题</h2>
+        <!-- 在使用多个插槽时，需用到name属性使插槽具有名字，
+            在插入内容时，在插入内容中使用slot=插槽名便可使用指定名字的插槽 -->
+        <slot name="left">左边</slot>
+        <slot name="center">中间</slot>
+        <slot name="right">右边</slot>
+    </div>
+</template>
+<script>
+    const vm = new Vue({//vue实例 const声明常量 new操作符用于生成实例 Vue()为vue.js库中的一个构造方法 
+        el: '#app',//用于挂载管理的元素
+        data() { //数据 响应式：data和dom实时绑定
+            return {
+                movies: ["大话西游", "变形金刚", "哆啦a梦", "少林寺"],
+                arr: ["大猩猩", "变形金刚", "三个火枪手", "进击的巨人"],
+                currentIndex: 0,
+                baseStyle: { backgroundColor: "red" },
+                baseStyle1: { fontSize: "100px" },
+                books: [
+                    { id: 110, name: "Unix编程艺术", price: 119 },
+                    { id: 111, name: "代码大全", price: 105 },
+                    { id: 112, name: "深入理解计算机原理", price: 98 },
+                    { id: 113, name: "现代操作系统", price: 87 },
+                ],
+                names: ["why", "kobe", "james", "curry"],
+                info: {
+                    name: "wu",
+                    age: 20,
+                    height: 1.88
+                },
+                books: [{
+                    id: 1,
+                    name: "《算法导论》",
+                    date: "2006-9",
+                    price: 85.00,
+                    count: 1,
+                },
+                {
+                    id: 2,
+                    name: "《UNIX编程艺术》",
+                    date: "2006-2",
+                    price: 59.00,
+                    count: 1,
+                },
+                {
+                    id: 3,
+                    name: "《编程珠玑》",
+                    date: "2008-10",
+                    price: 39.00,
+                    count: 1,
+                },
+                {
+                    id: 4,
+                    name: "《代码大全》",
+                    date: "2006-3",
+                    price: 128.00,
+                    count: 1,
+                }
+                ],
+                message: "你好啊",
+                sex: "男",/* 此处可以给一个初始值作为默认值 */
+                isAgree: true,
+                hobbies: [],
+                fruit: "香蕉",
+                mySelects: ["葡萄"],
+                hobbies: [],
+                originHobbies: ["篮球", "足球", "乒乓球", "羽毛球", "台球", "高尔夫", "排球", "铅球"],
+
+
+
+
+
+                date: "2022/4/6",
+                name: "沉木"
+            };
+
+        }
+        ,
+        methods: {//方法
+            /* counter增加的方法 */
+            add: function () {
+                console.log("add方法被执行");
+                this.counter++;
+            },
+            /* counter减少的方法 */
+            sub: function () {
+                console.log("sub方法被执行");
+                this.counter--;
+            },
+            red: function () {
+                this.isRed = !this.isRed;
+            },
+            size: function () {
+                this.isBig = !this.isBig;
+            },
+            getClass: function () {
+                return { red: this.isRed, big: this.isBig };
+            },
+            getClassArray: function () {
+                return [this.color, this.changeBig]
+            },
+            liClick(index) {
+                this.currentIndex = index;
+            },
+            getStyles: function () {
+                return { fontSize: this.finalSize + 'px', backgroundColor: this.finalColor };
+            },
+            /* 购买数量增加 */
+            increment(index) {
+                this.books[index].count++;
+            },
+            /* 购买数量减少 */
+            decrement(index) {
+                this.books[index].count--;
+            },
+            removeHandle(index) {
+                this.books.splice(index, 1);
+            },
+            valueChange(event) {
+                /* 把最新的value赋值给message */
+                this.message = event.target.value;
+            },
+            cpn_click(item) {
+                console.log("父组件内的cpn_click触发", item);
+            }
+
+
+
+
+
+
+
+
+
+        },
+        computed: {//计算属性
+            name() {
+                return this.firstName + " " + this.lastName
+            },
+            totalPrice: function () {
+                let result = 0;
+                for (let i = 0; i < this.books.length; i++) {
+                    result += this.books[i].price;
+                }
+                return result;
+            },
+            totalPrice() {
+                let totalPrice = 0;
+                /* 第一种，for循环遍历 */
+                for (let i = 0; i < this.books.length; i++) {
+                    totalPrice += this.books[i].price * this.books[i].count;
+                }
+                /* 第二种，for in 循环遍历 */
+                // for(let i in this.books){//i取出的是每个数据的index
+                //     totalPrice += this.books[i].price * this.books[i].count;
+                // }
+                /* 第三种，for of 循环遍历 */
+                for (let item of this.books) {
+                    totalPrice += item.price * item.count;
+                }
+                return totalPrice;
+            }
+        },
+        watch: {//监听
+
+        },
+        filters: {//过滤器
+            //过滤器的使用:格式 参数 | 过滤器方法名
+            /* 过滤器会把|前面的参数作为函数的参数传入方法，进行处理后传出处理后的值 */
+            showPrice(price) {
+                return "￥" + price.toFixed(2);
+            }
+        },
+        components: {//组件
+            cpn: {
+                template: "#cpn",
+            },
+            "cpn1": {//子组件
+                template: "#cpn1",
+                props: {//接收属性，值可以是对象，也可以是数组
+                    see_movies: Array,//父组件要传入的属性
+                    show: {
+                        type: Function,//父组件要传入的属性
+                        default() {//父组件未能传入时执行语句
+                            return null;
+                        }
+                        /* 1,类型限制
+                        see_movies:Array,
+                        num:Number,
+                        title:String,
+        
+                        // 2,提供一些默认值
+                            see_message:{
+                                type:String,//传入类型
+                                default:"默认值",//如果传入类型为对象或数组，需要像data()一样写成函数的形式，如default(){ return ['one','一']}
+                                required:true,//是否必须传入
+                            }
+                        */
+                    }
+                },
+                methods: {//子组件内方法
+                    btn_click(item) {
+                        console.log("子组件内点击了 " + item.name);/* 子组件内点击提示 */
+                        //自定义事件：自定义事件名称,自定义参数
+                        this.$emit("item_click", item);//子组件将此事件(事件名可自定义)发射出去,第二个参数可以是子组件的数据
+                    }
+                },
+                data() {//跨作用域向父组件上传的数据 父组件用slot.data_X直接接收
+                    return {
+                        isShow: false,
+                        pLanguages: ["JavaScript", "C++", "Java", "C#", "Python", "Go", "Swift"],
+                    }
+                }
+            }
+        },
+        //生命周期 - 创建完成（可以访问当前this实例）
+        created() {
+            var btns = document.getElementsByTagName("button");
+            for (var i = 0; i < btns.length; i++) {
+                /* 1，for没有块级作用域，被其它地方改值 */
+                btns[i].addEventListener("click", function () {
+                    console.log("I,第" + i + "个按钮被点击");
+                });
+                /* 2，立即执行函数，有块级作用域，其它地方不能随意改值 */
+                (function (i2) {
+                    btns[i].addEventListener("click", function () {
+                        console.log("II,第" + i2 + "个按钮被点击");
+                    });
+                })(i)
+            }
+            /* 3，let关键字声明变量有块级作用域，作用域范围在{}之中，其它地方不能随意改值 */
+            var btns2 = document.getElementsByTagName("button");
+            for (let j = 0; j < btns2.length; j++) {
+                btns2[j].addEventListener("click", function () {
+                    console.log("III,第" + j + "个按钮被点击");
+                });
+            }
+            const date = {
+                date: "2020/11/11"
+                /* 1,const标识符声明变量必须立即赋值
+                  2,且赋值之后不可再次更改，
+                  3,对于const声明的复合型数据类型的数据保存的仅是地址，所以可以改变对象内部的属性，但不可赋一个新的对象
+            建议：在ES开发中，优先使用const，只有需要改变某一个标识符的值的时候才使用let/v */
+            };
+            let obj2 = {
+                name, age//1，对象增强写法
+            }
+            //ES6之后，把变量直接放在对象字面量中，ES6之后系统会自动在对象中声明一个同名的属性并把该变量的值赋给这个与它同名的属性
+            const obj = {};/* {}及其内部内容被称为对象字面量 */
+            let obj4 = {
+                test() {//2，对象方法的简写
+                    console.log("obj4的test函数");
+                }
+            }
+            /* v-on介绍
+                1，作用：绑定事件监听器
+                2，缩写：@
+                3，预期：Function | Inline Statement | Object
+                4，参数：event 
+                
+                <!-- v-on修饰符
+                在某些情况下，我们拿到event的目的可能是进行一些事件处理
+                Vue提供了修饰符来让我们方便的处理一些事件：
+                1，.stop 调用event.stopPropagation() 停止冒泡
+                2, .prevent  调用event.preventDefault() 阻止默认行为
+                3, .{keyCode | keyAlias} (键码或键简写) 只当事件是从特定键触发回调
+                4，.native  监听组件根元素的原生事件
+                5，.once  只触发一次回调语句,一次性的
+            -->
+                */
+
+            /*   1，如果我们不希望Vue出现类似重复利用被消除的元素的问题，可以给对应的input添加key
+          2,并且我们而要保证key的不同 */
+
+            /*arr'fuction 数组的那些方法是响应式的： */
+            //1,push方法 末尾添加多个
+            this.names.push("push方法是否能做到响应式：true");
+            //2,通过索引修改数组中的元素
+            this.names[0] = "this.names[0]修改数组中的元素能否做到响应式：false";
+            //3,pop() 末尾删除 pop方法是否能做到响应式：true
+            this.names.pop();
+            //4,shift() 首位删除 shift方法是否能做到响应式：true
+            this.names.shift();
+            //5,unshift() 首位添加多个
+            this.names.unshift("unshift方法是否能做到响应式：true");
+            //6,splice作用：删除元素/插入元素/替换元素 splice方法是否能做到响应式：true
+            this.names.splice(start, delNumber, "...");
+            //                start代表从第几个索引值开始操作,delNumber为要删除的索引值的数量，delNumber后面的所有参数为依次要添加的索引值
+            //7,sort() 数组有序排列 sort方法是否能做到响应式：true
+            this.names.sort();
+            //8,reverse() 数组反转 reverse方法是否能做到响应式：true
+            this.names.reverse();
+            //补充: 三种通过索引值修改数组中的元素
+            this.names[0] = "wu"; //...:false
+            this.names.splice(0, 1, "wu");  //...响应式:true
+            //Vue对象的set方法修改，set(要修改的对象,索引值,修改后的值)
+            Vue.set(this.names, 0, "wu");  //可变参数...n  n是用于存放参数的数组, ...响应式:true              
+
+            //简单理解：splice的第一个参数为要开始操作的位置
+            // 第二个参数为要删除的索引值的数量，可以为0即不删除
+            // 第三个参数及其以后的参数为要添加的索引值，可以没有即不添加
+            const nums = [10, 20, 111, 222, 444, 40, 50];
+            /* 三大高阶函数 */
+            /* b,filter过滤函数 */
+            let newNums1 = nums.filter(function (n) {//形式参数n依次取出数组中的元素
+                return n < 100;//此处返回值为true时，对应的n会放入到filter返回值中的新数组中，为false时则会被滤除，n编历完后filter函数会返回一个值全都满足条件的数组
+            })
+            /* d,map映射 遍历数组，并且返回一个新的数组，新的数组里的每个元素都执行map传入的函数 */
+            let new2Nums1 = newNums1.map(function (n) {
+                return n * 2;
+            });
+            /* f,reduce汇总 数组中所有内容进行 */
+            let total_ = new2Nums1.reduce(function (preValue, n) {
+                return preValue + n;
+            }, 0)//preValue初始值设为0 最终输出preValue
+
+        }
+    });
+</script>
+
+<!-- 模块化开发 -->
+<!-- ES6的模块化实现（常用）：export(导出)/import(导入) -->
+<script type="module" src="./20_2_m1.js">//这个由组员小明写的，一部分功能</script>
+<script type="module" src="./20_2_red1.js">//这个由组员小红写的，一部分功能</script>
+<script type="module" src="./20_2_m2.js">//不久后，小明又被安排写另一部分功能</script>
+
+</html>
+
+<!-- 高级功能
+        1，解耦视图和数据
+        2，可复用的组件
+        3，前端路由技术
+        4，状态管理
+        5，虚拟DOM
+    编程范式:声明式编程/命令式编程
+    Vue的生命周期
+    JavaScript数据类型    
+        1、数值类型:整数和浮点数 
+        2、布尔类型:true和false 
+        3、字符串类型:用引号括起来,可以双引号,也可以单引号 
+        4、undefined类型:确定一个已经声明但是还没有赋值的变量 
+        5、null类型:表明某个变量的值为空
+ -->
+
+<!-- js中布尔值为false的六种情况
+    下面6种值转化为布尔值时为false，其他转化都为true
+        1、undefined（未定义，找不到值时出现）
+        2、null（代表空值）
+        3、false（布尔值的false，字符串"false"布尔值为true）
+        4、0（数字0，字符串"0"布尔值为true）
+        5、NaN（无法计算结果时出现，表示"非数值"；但是typeof NaN==="number"）
+        6、""（双引号）或''（单引号） （空字符串，中间有空格时也是true）
+    注意空数组空对象，负值转的布尔值时都为true -->
+
+<!-- JS变量命名规范
+        1.变量名区分大小写,允许包含字母、数字、美元符号($)和下划线,但第一个字符不允许是数字...
+        2.变量命名长度应该尽可能的短,并抓住要点,尽量在变量名中体现出值的类型
+        3.尽量避免使用没有意义的命名
+        4.禁止使用JavaScript关键词、保留字命名
+        5.变量名命名方法一般用驼峰命名法
+    -->
+
+<!-- 组件的使用分成三个步骤：
+    1，创建组件构造器 ----调用Vue.extend()方法创建组件构造器
+    2，注册组件       ----调用Vue.component()方法注册组件
+    3，使用组件       ----在Vue实例的作用范围内使用组件 -->
+
+<!--     项目演示：
+    （终端输入npm install和npm run serve文件） -->
+
+<!--     有时候我们需要父组件直接访问子组件，子组件直接访问父组件，或者是子组件访问根组件，
+    1，父组件访问子组件：使用$children或者$refs（reference:引用;）
+    2,子组件访问父组件：使用$parent 
+
+1，直接在子组件中通过this.$parent.event来调用父组件的方法
+2，子组件里用$emit向父组件触发一个事件，父组件监听这个事件就行了
+-->
+<!-- webpack内容概述（webpack是一个现代的JavaScript应用的静态模块打包工具）
+    1，认识webpack
+    2,webpack的安装
+    3，webpack的起步
+    4，webpack的配置
+    5，loader的使用
+    6，webpack中配置Vue
+    7,plugin插件的使用
+    8，搭建本地服务器
+-->
+<!-- vue内容划分
+    1，vue基础知识
+    2，vue模块化开发思想
+    3，vue组件化开发思想(SPA单页面开发模式,任务列表,前端路由)
+    4，vue-router前端路由
+    5，vuex共享数据大管家
+    6，axios网络请求模块封装 -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 
+    1.字母和数字键的键码值(keyCode)
+        A---65;B---66;C---67;D---68;E---69;F---70;G---71;H---72;I---73;J---74;K---75;L---76;M---77;N---78;
+        O---79;P---80;Q---81;R---82;S---83;T---84;U---85;V---86;W---87;S---83;Y---89;Z---90;
+        
+        0---48;1---49;2---50;3---51;4---52;5---53;6---54;7---55;8---56;9---57;
+    
+    2.数字键盘上的键的键码值(keyCode)
+        0---96;1---97;2---98;3---99;4---100;5---101;6---102;7---103;8---104;9---105;
+        
+        *---106;+---107;ENTER---108; - ---109; . ---110; / ---111;
+        
+        F1---112;F2---113;F3---114;F4---115;F5---116;F6---117;F7---118;F8---119;F9---120;F10---121;F11---122;F12---123;
+    
+    3.控制键键码值(keyCode)
+        Backspace---8;Tab---9;Clear---12;Enter---13;Shift---16;Control---17;Alt---18;Cape Lock---20;Esc---27;
+        
+        Spacebar---32;Page Up---33;Page Down---34;End---35;Home---36;Left Arrow---37;Up Arrow---38;
+        
+        Right Arrow---39;Dw Arrow---40;Insert---45;Delete---46;Num Lock---144;
+        
+        ;: ---186;  =+ ---187; ,<---188;-_---189;.>---190;/?---191;`~---192;[{---219;\|---220;]}---221;'"---222;
+    
+    
+    3.多媒体键码值(keyCode)
+        音量加---175；
+        
+        音量减---174；
+        
+        停止---179；
+        
+        静音---173；
+        
+        浏览器---172；
+        
+        邮件---180；
+        
+        搜索---170；
+        
+        收藏---171；
+
+    4，Event 对象
+        鼠标 / 键盘属性
+        属性	描述
+        altKey	返回当事件被触发时，"ALT" 是否被按下。
+        button	返回当事件被触发时，哪个鼠标按钮被点击。
+        clientX	返回当事件被触发时，鼠标指针的水平坐标。
+        clientY	返回当事件被触发时，鼠标指针的垂直坐标。
+        ctrlKey	返回当事件被触发时，"CTRL" 键是否被按下。
+        metaKey	返回当事件被触发时，"meta" 键是否被按下。
+        relatedTarget	返回与事件的目标节点相关的节点。
+        screenX	返回当某个事件被触发时，鼠标指针的水平坐标。
+        screenY	返回当某个事件被触发时，鼠标指针的垂直坐标。
+        shiftKey	返回当事件被触发时，"SHIFT" 键是否被按下。
+        x	返回当事件被触发时，鼠标指针在当前元素的坐标系中的水平坐标。
+        y	返回当事件被触发时，鼠标指针在当前元素的坐标系中的垂直坐标。
+    -->
+
+<!-- 作者：沉木 日期：2022/4/6 -->

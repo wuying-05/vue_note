@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 判断使用GCF，即用Google Chrome浏览器内核渲染页面 -->
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>子组件访问父组件的方式</title>
+    <!-- 引入vue库,网上固定版本和本地文件 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+    <script src="./vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <cpn1></cpn1>
+    </div>
+</body>
+<template id="cpn1">
+    <div>
+        <h2>我是组件cpn1</h2>
+        <cpn1_1></cpn1_1>
+    </div>
+</template>
+<template id="cpn1_1">
+    <div>
+        <h2>我是组件cpn1_1</h2>
+        <button @click="show">cpn1_1的按钮</button>
+    </div>
+</template>
+<script>
+    const vm = new Vue({//vue实例
+        el: '#app',
+        data: {//数据
+
+        },
+        methods: {//方法
+
+        },
+        computed: {//计算属性
+
+        },
+        watch: {//监听
+
+        },
+        filters: {//过滤器
+
+        },
+        components: {//组件
+            cpn1: {
+                template: "#cpn1",
+                data() {
+                    return {
+                        name: "我是cpn1的name",
+                    }
+                },
+                components: {
+                    cpn1_1: {
+                        template: "#cpn1_1",
+                        methods: {
+                            show() {
+                                // 方法一：直接在子组件中通过this.$parent.event来调用父组件的方法
+                                //1，访问父组件$parent =>对象（仅一个对象，不是对象数组）
+                                console.log(this.$parent);
+                                console.log(this.$parent.name);
+                                // 2,访问根组件$root =>对象
+                                console.log(this.$root);
+                                // 方法二：子组件里用$emit向父组件触发一个事件，父组件监听这个事件就行了。
+                                // 写法可参考19_9
+                                // 方法三：父组件把方法传入子组件中，在子组件里直接调用这个方法
+                                // 写法可参考19_7
+                            }
+                        }
+
+                    }
+                }
+            }
+        },
+    });
+</script>
+
+</html>

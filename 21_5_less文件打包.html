@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 判断使用GCF，即用Google Chrome浏览器内核渲染页面 -->
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>less打包</title>
+    <!-- 引入vue库,网上固定版本和本地文件 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+    <script src="./vue.js"></script>
+</head>
+<!-- webpack官网："https://webpack.docschina.org/loaders/less-loader/" -->
+<!-- .less文件打包类似于.css文件
+1,安装"npm install --save-dev less-loader less"安装less及less-loader
+2,配置相关文件见下文或见官网："https://webpack.docschina.org/loaders/less-loader/"
+    `test:/\.less$/,
+    use:[{
+        loader:"style-loader"
+    },{
+        loader:"css-loader"
+    },{
+        loader:"less-loader"
+    }
+    ]
+    `
+3,指令"npm run build"
+-->
+<body>
+    <div id="app">
+        
+    </div>
+</body>
+
+
+</html>

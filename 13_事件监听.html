@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>事件监听</title>
+    <!-- 事件监听
+            在前端开发中我们需要经常和用于交互
+            1，这个时候，我们就必须监听用户发生交互的时间，比如点击，拖拽，键盘事件等等
+            2，在Vue中如何监听事件呢？使用V-on指令
+        v-on介绍
+            1，作用：绑定事件监听器
+            2，缩写：@
+            3，预期：Function | Inline Statement | Object
+            4，参数：event
+        v-on参数
+            1，当通过methods中定义方法，以供@click调用时，需要注意参数问题
+            情况1:如果该方法不需要额外参数，那么方法后的()可以不添加，没加()代表只传入函数地址，传入后自动调用
+                但是注意：如果方法本身中有一个参数，那么会默认将原生事件event参数传递进去
+            情况2：如果需要同时传入某个参数，同时需要event时，可以通过$event传入事件
+        总结：1，一般如果我们的函数需要参数，但是没有传入参数，那么函数的形参默认为undefined，
+                但是在事件定义中，绑定事件时没有传入参数，但是方法本身是需要一个参数的，Vue会默认将浏览器自动产生的event事件对象作为参数传入方法，
+                event对象实时保存着用户的所有交互数据
+2
+    -->
+</head>
+
+<body>
+    <div id="app">
+        <h2>{{number}}</h2>
+        <button v-on:click="number--">-</button>
+        <button v-on:click="number++">+</button>
+        <div></div>
+        <button @click="number--">-</button>
+        <button @click="number++">+</button>
+        <div></div>
+        <button @click="change_down">-</button>
+        <button @click="change_up">+</button>
+        <div></div>
+        <button @click="change">change</button><!-- 方法后不加()传入该方法地址，部分代码加载完成后（即到下一个计时器运行前）自动调用 -->
+        <!-- 函数名其实就是指向函数的指针。不加括号可以认为是查看函数的完整信息。不加括号传参，相当于传入函整体。加括号表示立即调用(执行)这个函数里面的代码。 -->
+        <button @click="change()">change()</button><!-- 方法后加()立即运行此函数 -->
+        <button @click="change(123)">change(123)</button><!-- 方法后加()立即运行此函数 -->
+        <button @click="change(123,event)">change(123,event)</button>
+        <!-- 在此处传入自己需要的参数和event变量，注意直接写event会被当作某个变量而非浏览器event对象 -->
+        <!-- 参考JS变量命名规范可以知道，123做不成变量，只能是数字，而event会被视为变量 -->
+        <button @click="change(123,$event)">change(123,$event)</button>
+        <!-- 在此处传入自己需要的参数和event对象环境参数，在event前加 $ 会被vue解析为浏览器event对象 -->
+        <!-- JS变量命名规范
+            1.变量名区分大小写,允许包含字母、数字、美元符号($)和下划线,但第一个字符不允许是数字...
+            2.变量命名长度应该尽可能的短,并抓住要点,尽量在变量名中体现出值的类型
+            3.尽量避免使用没有意义的命名
+            4.禁止使用JavaScript关键词、保留字命名
+            5.变量名命名方法一般用驼峰命名法
+         -->
+        <!-- v-on修饰符
+                在某些情况下，我们拿到event的目的可能是进行一些事件处理
+                Vue提供了修饰符来让我们方便的处理一些事件：
+                1，.stop 调用event.stopPropagation() 停止冒泡
+                2, .prevent  调用event.preventDefault() 阻止默认行为
+                3, .{keyCode | keyAlias} (键码或键简写) 只当事件是从特定键触发回调
+                4，.native  监听组件根元素的原生事件
+                5，.once  只触发一次回调语句,一次性的
+            -->
+        <!-- v-on修饰符 -->
+        <div @click="divClick">
+            <button @click.stop="btnClick">按钮</button><!-- .stop阻止冒泡，即btnClick点击触发时divClick不会跟着触发 -->
+        </div>
+        <input type="submit" value="提交" @click.prevent="submitClick"><!-- .prevent阻止默认的提交行为 -->
+        <input type="text" @keyup.enter="keyUp">
+        <!-- 自定义组件cpn添加v-on时要用.native修饰符才能绑定事件成功 -->
+        <!-- <cpn @click.native="change"></cpn> -->
+        <!-- once修饰符的使用 -->
+        <button @click.once="change_up">.once修饰符</button>
+    </div>
+    <script src="./vue.js"></script>
+    <script>
+        const vm = new Vue({
+            el: "#app",
+            data: {
+                number: 0,
+                event: "变量event,非浏览器的event对象"
+            },
+            methods: {
+                change_down() {
+                    this.number--;
+                },
+                change_up() {
+                    this.number++;
+                },
+                change(n) {//使用时没有传入参数，则会默认传入event对象作为参数
+                    this.number = n || -1;
+                    console.log(n);
+                },
+                change(n, event) {
+                    this.number = n || -2;
+                    console.log(n, event);
+                },
+                /* v-on修饰符 */
+                btnClick() {
+                    console.log("btnClick");
+                },
+                divClick() {
+                    console.log("divClick");
+                },
+                submitClick() {
+                    console.log("submitClick");
+                },
+                keyUp() {
+                    console.log("keyUp");
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
+<!-- 
+    1.字母和数字键的键码值(keyCode)
+        A---65;B---66;C---67;D---68;E---69;F---70;G---71;H---72;I---73;J---74;K---75;L---76;M---77;N---78;
+        O---79;P---80;Q---81;R---82;S---83;T---84;U---85;V---86;W---87;S---83;Y---89;Z---90;
+        
+        0---48;1---49;2---50;3---51;4---52;5---53;6---54;7---55;8---56;9---57;
+    
+    2.数字键盘上的键的键码值(keyCode)
+        0---96;1---97;2---98;3---99;4---100;5---101;6---102;7---103;8---104;9---105;
+        
+        *---106;+---107;ENTER---108; - ---109; . ---110; / ---111;
+        
+        F1---112;F2---113;F3---114;F4---115;F5---116;F6---117;F7---118;F8---119;F9---120;F10---121;F11---122;F12---123;
+    
+    3.控制键键码值(keyCode)
+        Backspace---8;Tab---9;Clear---12;Enter---13;Shift---16;Control---17;Alt---18;Cape Lock---20;Esc---27;
+        
+        Spacebar---32;Page Up---33;Page Down---34;End---35;Home---36;Left Arrow---37;Up Arrow---38;
+        
+        Right Arrow---39;Dw Arrow---40;Insert---45;Delete---46;Num Lock---144;
+        
+        ;: ---186;  =+ ---187; ,<---188;-_---189;.>---190;/?---191;`~---192;[{---219;\|---220;]}---221;'"---222;
+    
+    
+    3.多媒体键码值(keyCode)
+        音量加---175；
+        
+        音量减---174；
+        
+        停止---179；
+        
+        静音---173；
+        
+        浏览器---172；
+        
+        邮件---180；
+        
+        搜索---170；
+        
+        收藏---171；
+
+    4，Event 对象
+        鼠标 / 键盘属性
+        属性	描述
+        altKey	返回当事件被触发时，"ALT" 是否被按下。
+        button	返回当事件被触发时，哪个鼠标按钮被点击。
+        clientX	返回当事件被触发时，鼠标指针的水平坐标。
+        clientY	返回当事件被触发时，鼠标指针的垂直坐标。
+        ctrlKey	返回当事件被触发时，"CTRL" 键是否被按下。
+        metaKey	返回当事件被触发时，"meta" 键是否被按下。
+        relatedTarget	返回与事件的目标节点相关的节点。
+        screenX	返回当某个事件被触发时，鼠标指针的水平坐标。
+        screenY	返回当某个事件被触发时，鼠标指针的垂直坐标。
+        shiftKey	返回当事件被触发时，"SHIFT" 键是否被按下。
+        x	返回当事件被触发时，鼠标指针在当前元素的坐标系中的水平坐标。
+        y	返回当事件被触发时，鼠标指针在当前元素的坐标系中的垂直坐标。
+    -->

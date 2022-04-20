@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 判断使用GCF，即用Google Chrome浏览器内核渲染页面 -->
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>安装webpack</title>
+    <!-- 引入vue库,网上固定版本和本地文件 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+    <script src="./vue.js"></script>
+</head>
+<!-- webpack安装(webpack官网:'https://webpack.docschina.org/')
+1，首先安装Node.js,Node.js自带了常用的软件包管理工具npm
+检查是否安装Node.js:快捷键win +R =>输入”cmd“后按enter回车键打开命令面板 =>输入"node -v"后回车 =>显示版本号则已安装node.js，反之提示“node 不是内部或外部命令...”则没安装成功
+没安装则到百度上搜索"node.js安装",根据网上步骤安装
+2,安装webpack
+快捷键win +R =>输入”cmd“后按enter回车键打开命令面板 =>输入"npm install webpack@3.6.0 -g"后回车使用npm安装webpack,版本为3.6.0,并设置webpack为全局环境变量
+检查：命令面板输入"webpack -version"检查版本号
+3,基本使用
+webpack一键打包指令:命令面板使用指令"cd 文件名或文件夹名"进行选中,选中要进行webpack打包的文件，一般是index.html程序入口的上一级文件夹 =>使用指令"webpack 主体文件（或待处理文件，一般是./src/main.js）相对路径 返回文件的相对路径(一般为./dist/bundle.js)"按回车后打包处理，
+webpack打包会自动处理模块之间的联系（所以选中主体文件即可）,文件格式整理和转换等等，最终返回一个统一打包后的文件，在index.html中引入此打包后的文件即可。
+-->
+<body>
+    <div id="app">
+        <!-- webpack打包详情请查看"21_3_webpack的使用" -->
+    </div>
+</body>
+<!-- 总结：
+1，VSCode中打开终端：快捷键"ctrl + ` " 或打开window终端:"home键 + r"=>输入"cmd"打开终端
+2，"cd 路径"选中文件夹或文件
+3,node.js安装点击"https://www.runoob.com/nodejs/nodejs-install-setup.html"按照上面步骤安装
+4,安装全局的webpack:终端上输入指令"npm install webpack@3.6.0 -g";
+  安装局部webpack:终端上"cd"选中位置再输入“npm install webpack@3.6.0 --save-dev”开发时工具
+5，webpack没有权限无法无法加载文件,系统上禁止运行脚本的解决方法："使用管理员身份运行powershell"=>"设置 Set-ExecutionPolicy RemoteSigned为y"
+6,使用webpack:a,直接使用，例："webpack ./src/main.js ./dist/bundle.js"
+            b,仅用"webpack"指令,需要先写一个"webpack.config.js"文件并设置好入口和出口，然后"webpack"就可智能打包,需要局部打包:局部安装webpack =>选中局部webpack文件中的"node_modules/.bin/webpack" =>使用"webpack"指令
+            c,使用"npm run"调用指定脚本,需要先"npm init"生成一个“package.json”文件并添加脚本，例："build": "webpack",最后"npm run build"智能打包且就近选择webpack工具
+-->
+<!-- webpack中的一些安装和相关文件配置在以后的脚手架cil中配置好的，可直接用 -->
+</html>

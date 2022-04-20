@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 判断使用GCF，即用Google Chrome浏览器内核渲染页面 -->
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>模块化开发简介</title>
+    <!-- 引入vue库,网上固定版本和本地文件 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+    <script src="./vue.js"></script>
+</head>
+<!-- 在网页开发早期，js制作作为一种脚本语言，做一些简单的表单验证或动画实现等，那个时候代码还是很少的，一般写在<script>标签就行了。
+随着ajax异步请求的出现，慢慢形成了前后端的分离
+    1，客户端需要完成的事情起来越多，代码量也是与是俱增。
+    2，为了应对代码量的剧增，我们通常会将代码组织在多个JS文件中，进行维护。
+    3，但是这种维护方式，依然不能避免一些灾难性的问题。 比如：全局变量同名化，
+-->
+
+<body>
+    
+</body>
+<!-- 下面演示开发时不用模块化开发而引起同名化问题 -->
+<script>//这个script内容是由项目组长写的，主要是一些公共样式或基础样式和网页轮廓框架
+    /* 。。。 */
+</script>
+<script>//这个由组员小明写的，一部分功能
+    var name = "小明";
+    function sum(num1, num2) {
+        return num1 + num2;
+    }
+    var flag = true;
+    if (flag) {
+        console.log(sum(13, 14));
+    }
+</script>
+<script>//这个由组员小红写的，一部分功能
+    var name = "小红";
+    var flag = false;
+    if (!flag) {
+        console.log(name + "没及格：" + flag);
+    }
+</script>
+<script>//不久后，小明又被安排写另一部分功能
+if(flag){
+    console.log("小明真帅!");
+}else{
+    console.log("小明不帅...");
+}
+//小明想要输出"小明真帅"，但一直输出的是"小明不帅...",小明在长长的代码中找了很久，仍然没有找到他改动flag值为false的代码(因为他压根就没改动过flag的值)，
+// flag是一个常用的变量名;小红也同样用了这个做变量名，但她设置flag的值为false;小明气愤的找了半天都没找到改动flag的地方;
+</script>
+
+
+</html>

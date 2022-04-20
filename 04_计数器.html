@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>计数器</title>
+    <script src="./vue.js"></script>
+</head>
+
+<body>
+    <div id="app">当前计数：{{counter}}
+        <!-- <button v-on:click="counter++">+</button> -->
+        <!-- <button @click="counter--">-</button> -->
+        <button v-on:click="add">+</button>
+        <button v-on:click="sub">-</button>
+    </div>
+    <script>
+        const vm = new Vue({
+            el: "#app",
+            data: {
+                counter: 0
+            },
+            methods: {
+                /* counter增加的方法 */
+                add: function () {
+                    console.log("add方法被执行");
+                    this.counter++;
+                },
+                /* counter减少的方法 */
+                sub: function () {
+                    console.log("sub方法被执行");
+                    this.counter--;
+                }
+            }
+        });
+    </script>
+    <!-- 至此，我们用了新的指令@click和属性methods
+    1,新的属性：methods,该属性用于在Vue对象中定义方法
+    2，新的指令：@click（即：on-click）,该指令用于监听某个元素的点击事件，并且需要指定当发生点击时，执行的方法
+    （此方法通常是methods中定义的方法）
+-->
+
+</body>
+
+</html>

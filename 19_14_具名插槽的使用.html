@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 判断使用GCF，即用Google Chrome浏览器内核渲染页面 -->
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>具名插槽</title>
+    <!-- 引入vue库,网上固定版本和本地文件 -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script> -->
+    <script src="./vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <cpn><span slot="center">标题1</span></cpn>
+        <cpn><button slot="left">按钮</button><span slot="center">标题2</span></cpn>
+        <cpn><input type="text" slot="center"><button slot="left">返回</button><button slot="right">搜索</button></cpn>
+    </div>
+</body>
+<template id="cpn">
+    <div>
+        <h2>我是标题</h2>
+        <!-- 在使用多个插槽时，需用到name属性使插槽具有名字，
+            在插入内容时，在插入内容中使用slot=插槽名便可使用指定名字的插槽 -->
+        <slot name="left">左边</slot>
+        <slot name="center">中间</slot>
+        <slot name="right">右边</slot>
+    </div>
+</template>
+<script>
+    const vm = new Vue({//vue实例
+        el: '#app',
+        data: {//数据
+
+        },
+        methods: {//方法
+
+        },
+        computed: {//计算属性
+
+        },
+        watch: {//监听
+
+        },
+        filters: {//过滤器
+
+        },
+        components: {//组件
+            cpn: {
+                template: "#cpn",
+            }
+        },
+    });
+</script>
+
+</html>

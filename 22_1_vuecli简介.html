@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 判断使用GCF，即用Google Chrome浏览器内核渲染页面 -->
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>vuecli简介</title>
+    <!-- 引入vue库,网上固定版本和本地文件 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+    <script src="./vue.js"></script>
+</head>
+<!-- cli简介(官网："https://cli.vuejs.org/zh/guide/")
+        1，cli针对大型项目的开发而设计,功能齐全,省心，省力，省头发,大家用了都说好
+        2，cli的其实相比于webpack的打包功能更为强大,不仅配置文件方便，更有强大的一键打包功能,nice啊
+    cli使用前提:node和webpack
+        1,判断安装nodee.js,未安装点击https://www.runoob.com/nodejs/nodejs-install-setup.html安装node.js
+        2,判断安装webpack工具,未安装终端命令"npm install webpack@3.6.0 -g"全局安装3.6.0版本webpack,或见"C:\Users\ASUS\Desktop\我的文档\Vue2_Advanced\21_webpack打包工具\21_2_安装webpack.html"
+    VueCLI的使用
+        1,安装vue脚手架，终端命令"npm install -g @vue/cli"全局安装cli最新版，国内镜像下载先设置见"https://blog.csdn.net/Java_53/article/details/111056195"
+        2,'npm install @vue/cli-init -g':安装vueCLI版本切换器;
+        3,VueCLI2初始化项目 :'vue init webpack my_project';
+          VueCLI3初始化项目 :'vue create my_project';
+          这里测试一下："vue init webpack vuecli2test"根据'22_4_cli2详解.jpg'初始化配置
+        
+-->
+<body>
+    <div id="app">
+
+</body>
+
+
+</html>
+<!-- 知识回顾
+一，组件化开发
+1.1,父子组件的访问
+    1，children/refs
+    2,parent/root
+1.2,slot的使用
+    1,基本使用
+    2，具名插槽
+    3,编译的作用域
+    4，跨作用插槽
+二，前端模块化
+2.1,为什么要使用模块化
+    1，简单写JS代码带来的问题
+    2，闭包引起代码不可复用
+    3，自己实现了简单的模块化
+    4，AMD/CMD/CommonJS
+2.2,ES6中模块的使用
+    1,export
+    2,import
+三，webpack
+3.1什么是webpack
+    1，webpack和gulp对比
+    2，webpack依赖环境
+    3，安装webpack
+3.2,webpack的起步
+    1,web命令
+    2，webpack配置：webpack.config.js/package.json(scripts)
+3.3,webpack的loader
+    1,css-loader/style-loader
+    2,less-loader/less
+    3,url-loader/file-loader
+    4,babel-loader
+3.4,webpack中配置Vue
+    1,vue-loader
+3.5,webpack的plugin
+3.6,搭建本地服务器
+    1，webpack-dev-sever
+3.7,配置文件的分离
+四，Vue CLI
+4.1什么是CLI
+    1,脚手架是什么东西
+    2，CLI依赖webpack.node.npm
+    3,CLI3 -> 拉去CLI2模块（版本切换器）
+4.2,CLI2初始化项目的过程
+4.3,CLI2生产的目录结构的解析
+
+
+预习内容
+    一，Vue CLI脚手架
+    二，Vue-Router路由
+    三，Vuex
+    四，网络请求封装(axios框架)
+-->

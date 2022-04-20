@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ES6有关技术补充</title>
+</head>
+
+<body>
+    <div id="app">
+        <button>按钮</button>
+        <button>按钮</button>
+        <button>按钮</button>
+        <button>按钮</button>
+        <button>按钮</button>
+    </div>
+    <!-- 1，let/var
+        事实上var的设计可以看成JavaScript语言设计上的错误，但是这种错误多半不能修复和移除，以为需要向后兼容
+            1，大概十年前，Brendan Eich就决定修复这个问题，于是他添加了一个新的关键字:let
+            2，我们可以将let看成更完美的var
+        块级作用域
+            1，JS中使用var来声明一个变量时，变量的作用域主要是和函数的定义有关
+            2，针对于其他块定义来说是没有作用域的比如if/for等，这在我们开发中往往会引起一些问题
+        变量作用域：变量在什么范围内量可用
+        没有块级作用域引起的问题
+        1，if的块级没有作用域
+        2，for的块级没有作用域
+        为什么闭包可以解决变量值被其它地方改动的问题，是因为函数是有作用域的
+        ES5之前if和for都没有块级级作用域的概念，所以在很多时候，都必须借助于function 作用域来解决应用外面变量的问题
+    -->
+    <script>
+        var btns = document.getElementsByTagName("button");
+        for (var i = 0; i < btns.length; i++) {
+            /* 1，for没有块级作用域，被其它地方改值 */
+            btns[i].addEventListener("click", function () {
+                console.log("I,第" + i + "个按钮被点击");
+            });
+            /* 2，立即执行函数，有块级作用域，其它地方不能随意改值 */
+            (function (i2) {
+                btns[i].addEventListener("click", function () {
+                    console.log("II,第" + i2 + "个按钮被点击");
+                });
+            })(i)
+        }
+        /* 3，let关键字声明变量有块级作用域，作用域范围在{}之中，其它地方不能随意改值 */
+        var btns2 = document.getElementsByTagName("button");
+        for (let j = 0; j < btns2.length; j++) {
+            btns2[j].addEventListener("click", function () {
+                console.log("III,第" + j + "个按钮被点击");
+            });
+        }
+    </script>
+</body>
+<!-- 
+    JavaScript数据类型    
+        1、数值类型:整数和浮点数 
+        2、布尔类型:true和false 
+        3、字符串类型:用引号括起来,可以双引号,也可以单引号 
+        4、undefined类型:确定一个已经声明但是还没有赋值的变量 
+        5、null类型:表明某个变量的值为空
+    注意：变量和字符串一个比较突出的区别就是字符串必须用引号括起来（注意：有些地方可以省略引号，但其实是系统自动会加上引号），
+    而变量会出现在特定的地方，变量用的很广，由于字符串的隐式转换，变量可以出现在字符串中，但不能单独出现在引号中，比如："number"就是字符串而非变量
+    Java内置数据类型
+        Java语言提供了八种基本类型。
+        六种数字类型（四个整数型，两个浮点型），一种字符类型，还有一种布尔型。
+        数字类型：byte,short,int,long , double,float 
+        字符型：char
+        布尔型：boolean
+    -->
+<!-- TypeScript
+    TypeScript对JS没有类型检测做了这方面的优化，作用与Java的泛型类似
+    1，TypeScript的参数加泛型
+    function(参数:参数的数据类型){}
+    2,Java的参数加泛型
+    f(<参数的数据类型>参数){}
+    没有类型检测可能导致的问题：比如函数的参数本应是字符型，但传入的参数却是数字型，而导致了错误
+    -->
+<!-- js中布尔值为false的六种情况
+    下面6种值转化为布尔值时为false，其他转化都为true
+        1、undefined（未定义，找不到值时出现）
+        2、null（代表空值）
+        3、false（布尔值的false，字符串"false"布尔值为true）
+        4、0（数字0，字符串"0"布尔值为true）
+        5、NaN（无法计算结果时出现，表示"非数值"；但是typeof NaN==="number"）
+        6、""（双引号）或''（单引号） （空字符串，中间有空格时也是true）
+    注意空数组空对象，负值转的布尔值时都为true -->
+
+</html>

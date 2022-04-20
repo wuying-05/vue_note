@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 判断使用GCF，即用Google Chrome浏览器内核渲染页面 -->
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>注册组件的基本步骤</title>
+    <!-- 引入vue库,网上固定版本和本地文件 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+    <script src="./vue.js"></script>
+</head>
+<!-- 组件的使用分成三个步骤：
+        1，创建组件构造器 ----调用Vue.extend()方法创建组件构造器
+        2，注册组件       ----调用Vue.component()方法注册组件
+        3，使用组件       ----在Vue实例的作用范围内使用组件
+    查看运行结果：
+        1，和直接使用一个div看起来并没有什么区别
+        2，但是我们可以设想，如果很多地方都要显示这样的信息，我们是不是就可以直接使用<my-cpn></my-cpn>来完成呢
+
+-->
+
+<body>
+    <my-cpn>
+        <h2>我是标题</h2>
+        <p>我是内容1，哈哈哈哈哈哈</p>
+        <p>我是内容2，呵呵呵呵呵呵呵呵呵呵呵呵</p>
+    </my-cpn>
+    <div id="app">
+        <!-- 组件的使用步骤3，使用组件 -->
+        <my-cpn></my-cpn>
+        <my-cpn></my-cpn>
+        <my-cpn></my-cpn>
+        <my-cpn></my-cpn>
+    </div>
+</body>
+
+<script>
+    /* 组件的使用步骤
+    1：创建组件构造器对象 */
+    const cpnConstructor = Vue.extend({
+        //构造模板
+        template: `
+        <div>
+            <h2>我是标题</h2>
+            <p>我是内容1，哈哈哈哈哈哈</p>
+            <p>我是内容2，呵呵呵呵呵呵呵呵呵呵呵呵</p>
+        </div>
+        `
+    });
+    /* 2,注册组件（全局组件，全局组件意味着可以在多个Vue的实例中使用）
+    Vue.component("新组件名",组件构造器);
+     */
+    Vue.component("my-cpn", cpnConstructor);//注册组件
+    const vm = new Vue({//vue实例
+        el: '#app',
+        data: {//数据
+
+        },
+        methods: {//方法
+
+        },
+        computed: {//计算属性
+
+        },
+        watch: {//监听
+
+        },
+        filters: {//过滤器
+
+        },
+        components: {//组件
+            //my_cpn2的使用组件时的标签名，此处注册的组件是局部组件，注册局部组件用的最多，局部组件仅可在此Vue实例中使用
+            my_cpn2: cpnConstructor2,
+        },
+    });
+    /* 注册组件步骤解析
+        1，Vue.extend():
+            a,调用Vue.extend()创建的是一个组件构造器
+            b,通常在创建组件构造器时，传入template代表我们自定义组件的模板
+            c,该模板就是在使用到组件的地方，要显示的HTML代码。
+            d,事实上，这种写法在Vue2.x的文档中几乎已经看不到了，
+            它会直接使用下面会讲到的语法糖，但是在很多资料还是会提到这种方式，而且这种方式是学习后面其它方式的基础。
+        2，Vue.component():
+            1，调用Vue.component()是将刚才的组件构造器注册为一个组件，并且给它起一个组件的标签名称
+            2,所以需要传递两个参数：1，注册组件的标签名 2，组件构造器
+        3，组件必须挂载在某个Vue实例下，否则它不会生效
+     */
+</script>
+
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>对象增强写法</title>
+</head>
+
+<body>
+
+    <!-- ES6中，对于对象字面量进行了很多增强
+            属性初始化简写和方法简写
+    -->
+    <script>
+        // 1，属性的简写
+        // ES6之前
+        let name = "shy";
+        let age = 18;
+        let obj1 = {
+            name: name,
+            age: age
+        };
+        console.log(obj1);
+        //ES6之后，把变量直接放在对象字面量中，ES6之后系统会自动在对象中声明一个同名的属性并把该变量的值赋给这个与它同名的属性
+        let obj2 = {
+            name, age
+        }
+        console.log(obj2);
+        console.log("------------");
+        //2,方法的简写
+        //ES6之前
+        let obj3 = {
+            test: function () {
+                console.log("obj3的test函数");
+            }
+        }
+        obj3.test();
+        //ES6之后
+        let obj4 = {
+            test() {
+                console.log("obj4的test函数");
+            }
+        }
+    </script>
+    <script>
+        const obj = {};/* {}及其内部内容被称为对象字面量 */
+    </script>
+</body>
+
+</html>

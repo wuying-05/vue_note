@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 判断使用GCF，即用Google Chrome浏览器内核渲染页面 -->
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>父子组件的双向绑定通信</title>
+    <!-- 引入vue库,网上固定版本和本地文件 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+    <script src="./vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <cpn :props_number1="num1" :props_number2="num2" @change_num1="change_num1" @change_num2="change_num2"></cpn>
+    </div>
+</body>
+<template id="cpn">
+    <div>
+        <label for="n1">
+            <h2>props_number1:{{props_number1}}</h2>
+            number1: <input type="text" :value="number1" @input="change_number1" id="n1">
+        </label>
+        <label for="n2">
+            <h2>props_number2:{{props_number2}}</h2>
+            number2: <input type="text" :value="number2" @input="change_number2" id="n2">
+        </label>
+        <p>
+            1，父子组件的双向绑定通信的实现
+            2，数据之间的倍数关系
+        </p>
+    </div>
+</template>
+<script>
+    const vm = new Vue({//vue实例
+        el: '#app',
+        data: {//数据
+            num1: 1,
+            num2: 2,
+        },
+        methods: {//方法
+            change_num1(n) {
+                n=parseFloat(n)
+                this.num1 = n;
+            },
+            change_num2(n) {
+                n=parseFloat(n)
+                this.num2 = n;
+            },
+
+        },
+        computed: {//计算属性
+
+        },
+        watch: {//监听
+
+        },
+        filters: {//过滤器
+
+        },
+        components: {//组件
+            "cpn": {
+                template: "#cpn",
+                data() {
+                    return {
+                        number1: this.props_number1,
+                        number2: this.props_number2,
+                    }
+                },
+                props: {
+                    props_number1: {
+                        type: Number,
+                        defualt() {
+                            return -1;
+                        }
+                    },
+                    props_number2: {
+                        type: Number,
+                        defualt() {
+                            return -1;
+                        }
+                    }
+                },
+                methods: {
+                    change_number1(event) {
+                        this.number1 = event.target.value;
+                        this.$emit("change_num1", this.number1);
+                        this.number2=this.number1*100;
+                        this.$emit("change_num2", this.number2);
+                    },
+                    change_number2(event) {
+                        this.number2 = event.target.value;
+                        this.$emit("change_num2", this.number2);
+                        this.number1=this.number2/100;
+                        this.$emit("change_num1", this.number1);
+                    }
+                },
+            }
+        },
+    });
+</script>
+
+</html>

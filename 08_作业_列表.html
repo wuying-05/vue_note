@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>列表</title>
+</head>
+<style>
+    [v-cloak] {
+        display: none;
+    }
+
+    .active {
+        color: red;
+    }
+</style>
+
+<body>
+    <!-- 作业需求：点击列表中的哪一项，那么该的文字变成红色 -->
+    <div id="app" v-cloak>
+        <ul>
+            <li v-for="(m,index) in arr" :class="{active:currentIndex === index}" @click="liClick(index)">
+                {{index}}--{{m}}</li>
+        </ul>
+    </div>
+    <script src="./vue.js"></script>
+    <script>
+        const vm = new Vue({
+            el: "#app",
+            data: {
+                arr: ["大猩猩", "变形金刚", "三个火枪手", "进击的巨人"],
+                currentIndex: 0,
+            },
+            methods: {
+                liClick(index) {
+                    this.currentIndex = index;
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
